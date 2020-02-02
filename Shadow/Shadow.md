@@ -53,7 +53,7 @@ Casade Shadow Cull
 解决的方案主要有：增加Shadow Map Altas的尺寸，但是一般对texture的最大尺寸都有限制；在生成Shadow Map Altas的时候添加Depth Bias;在采样Shadow Map Altas的时候添加Normal bias。要得到一个理想的结果，往往是好几个参数一起联调的结果。
 
 ## 2.2. 边缘阴影闪烁
-同[剔除中的Max distance](##剔除)
+ 同[剔除中的Max distance](#24-剔除)
 
 ## 2.3. 软阴影处理
 
@@ -77,6 +77,7 @@ Casade Shadow Cull
 
 ## 2.4. 剔除
 1. Max distance
+
 进行阴影剔除的最初方式，大于当前distance的fragment不用进行阴影的相关判断。
 
 但是如果Max distance 太小，小于Cascade最大的半径，再加上精度问题就会出现阴影闪烁的情况。
