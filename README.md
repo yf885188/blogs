@@ -1,3 +1,3 @@
 # blogs
 
-[目录](./SRP_TOC.md)
+[SRP](./SRP/SRP_TOC.md)
