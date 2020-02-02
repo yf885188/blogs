@@ -1,5 +1,9 @@
-# Shadow
-[toc]
+[Shadow](#shadow)
+- [基本实现原理](#基本实现原理)
+    - [平行光阴影](#平行光阴影)
+    - [级联阴影——Cascade Shadows](#级联阴影cascade-shadows)
+    - [不足](#不足)
+- [细节优化](#细节优化)
 
 # 基本实现原理
 目前的阴影的实现方式主要有两种方式：Shadow Map 和 Shadow Volume。Unity采用Shadow Map，本篇主要介绍的是Showdow Map的实现方式。
