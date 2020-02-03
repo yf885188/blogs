@@ -10,7 +10,6 @@
         - [1.5.2. 设置](#152-设置)
     - [1.6. GPU Instancing](#16-gpu-instancing)
     - [1.7. Batcher 限制](#17-batcher-限制)
-- [2. 相关结构](#2-相关结构)
 
 <!-- /TOC -->
 
@@ -28,7 +27,7 @@
 ## 1.5. SRP Batching
 ### 1.5.1. 具体原理
 
-参考[官网SRP Batcher]()
+参考[官网SRP Batcher](https://docs.unity3d.com/Manual/SRPBatcher.html)
 <div align=center>
 
 ![SRP Batcher vs Standerd Batcher][SRPBatcherProcess]
@@ -56,13 +55,29 @@
 > GraphicsSettings.useScriptableRenderPipelineBatching = true;
 
 ## 1.6. GPU Instancing
+GPU Instancing 的使用条件：
+- 必须使用mesh，但不包括skinned mesh
+- 只有有相同mesh和相同material的Gameobject才能被合批
+- 使用per-instance data 来设置不同的Material属性值。
+>此类属性值必须在Shader中必须以下列形式定义
+
+```
+UNITY_INSTANCING_BUFFER_START(Props)
+    UNITY_DEFINE_INSTANCED_PROP(fixed4, _Color)
+UNITY_INSTANCING_BUFFER_END(Props)
+```
+>在传值的时候必须以MaterialPropertyBlock的方式设置
+
+```
+props.SetColor("_Color", new Color(r, g, b));  
+renderer = obj.GetComponent<MeshRenderer>();
+renderer.SetPropertyBlock(props);
+```
+
 ## 1.7. Batcher 限制
-u3d的合批只强调了材质相同就可以进行合批，实际上还有很多其他的限制：
+u3d的合批有很多限制：
 1. 非统一Scale(*各个维度的scale变化不是一致的*)的Gameobject不行；
-
-# 2. 相关结构
-
-
+2. Static Batching 和 Dynamic Batching 的优先级都要高于GPU Instancing,前两者激活的情况下，GPU Instancing不会启用。但是SRP Batching和GPU Instancing可以一起启用。
 
 [SRPBatcherProcess]: ./SRPBatcherProcess.png
 [SRPBatcherDataUpateProcess]: ./SRP_Batcher_Data_Update_Process.png
