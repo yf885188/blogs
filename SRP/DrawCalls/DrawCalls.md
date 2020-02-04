@@ -8,6 +8,7 @@
     - [1.5. SRP Batching](#15-srp-batching)
         - [1.5.1. 具体原理](#151-具体原理)
         - [1.5.2. 设置](#152-设置)
+        - [注意事项](#注意事项)
     - [1.6. GPU Instancing](#16-gpu-instancing)
     - [1.7. Batcher 限制](#17-batcher-限制)
 
@@ -53,6 +54,9 @@
 
 ### 1.5.2. 设置
 > GraphicsSettings.useScriptableRenderPipelineBatching = true;
+
+### 注意事项
+> 在时机操作过程中发现，每次合批存在数量上限，超过数量上限的情况，单次合批上限为256，超过之后会进行平均分配
 
 ## 1.6. GPU Instancing
 GPU Instancing 的使用条件：
