@@ -36,7 +36,7 @@
 ***SRP Batcher vs Standerd Batcher***
 </div>
 
->通过图示的比较，可以看出，Shanderd Batcher更新的基本单位是Material，一旦Material发生改变，就需要重新**更新和bind*所有的***Material信息和Object信息。SRP Batcher的的更新的基本单位是Shader，只有在Shader Variant改变的情况下才重新绑定Material信息。所以SRP Batcher要求在场景中尽可能使用同一Shader的不同Material，因此也采用了一种集群的方式为Material设置了persistent mem。
+>通过图示的比较，可以看出，Shanderd Batcher更新的基本单位是Material，一旦Material发生改变，就需要重新**更新和bind*所有的***Material信息和Object信息。SRP Batcher的的更新的基本单位是Shader,相同shader不同材质的Gameobject也可以进行合批，并且只有在Shader Variant改变的情况下才重新绑定Material信息。所以SRP Batcher要求在场景中尽可能使用同一Shader的不同Material，因此也采用了一种集群的方式为Material设置了persistent mem。
 <div align=center>
 
 ![SRP Batcher Data Update Process][SRPBatcherDataUpateProcess]
@@ -80,7 +80,7 @@ renderer.SetPropertyBlock(props);
 
 ## 1.7. Batcher 限制
 u3d的合批有很多限制：
-1. 非统一Scale(*各个维度的scale变化不是一致的*)的Gameobject不行；
+1. 常见的有非统一Scale(*各个维度的scale变化不是一致的*)的Gameobject不行，更多参见[官方github总结](https://github.com/Unity-Technologies/BatchBreakingCause);
 2. Static Batching 和 Dynamic Batching 的优先级都要高于GPU Instancing,前两者激活的情况下，GPU Instancing不会启用。但是SRP Batching和GPU Instancing可以一起启用。
 
 [SRPBatcherProcess]: ./SRPBatcherProcess.png
