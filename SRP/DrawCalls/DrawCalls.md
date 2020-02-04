@@ -60,9 +60,10 @@
 
 ## 1.6. GPU Instancing
 GPU Instancing 的使用条件：
+>并不是所有开启了GPU Instancing就一定能成功合批，这种方式只是在Mesh能自动合并的情况下能加强合并效果，常常要伴随着[Graphics.DrawMesh]()等方式的调用，一般用于场景内草木、GPU蒙皮等程序生成的场合。
 - 必须使用mesh，但不包括skinned mesh
 - 只有有相同mesh和相同material的Gameobject才能被合批
-- 使用per-instance data 来设置不同的Material属性值。
+- 使用per-instance data 来设置不同的Material属性值
 >此类属性值必须在Shader中必须以下列形式定义
 
 ```
@@ -81,7 +82,7 @@ renderer.SetPropertyBlock(props);
 ## 1.7. Batcher 限制
 u3d的合批有很多限制：
 1. 常见的有非统一Scale(*各个维度的scale变化不是一致的*)的Gameobject不行，更多参见[官方github总结](https://github.com/Unity-Technologies/BatchBreakingCause);
-2. Static Batching 和 Dynamic Batching 的优先级都要高于GPU Instancing,前两者激活的情况下，GPU Instancing不会启用。但是SRP Batching和GPU Instancing可以一起启用。
+2. 优先级：Static Batching> GPU Instancing> Dynamic Batching ,前两者激活的情况下，GPU Instancing不会启用。但是SRP Batching和GPU Instancing可以一起启用。
 
 [SRPBatcherProcess]: ./SRPBatcherProcess.png
 [SRPBatcherDataUpateProcess]: ./SRP_Batcher_Data_Update_Process.png
