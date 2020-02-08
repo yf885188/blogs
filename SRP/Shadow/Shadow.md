@@ -23,17 +23,22 @@
 ## 1.2. 级联阴影——Cascade Shadows
 场景中的相机采用透视投影，平行光阴影使用的是正交投影，意味着在屏幕坐标系中，离场景相机越远的fragment越容易采样到同一个Shadow Map的同一个像素值，也即一个texel要覆盖更多的fragment，这就会导致阴影锯齿、太小的fragment shadow容易丢失以及**Shadow Acne**等问题。
 
-级联阴影，通过将光源的光照范围进行分级，每级生成不同的Shadow Map，保证在边缘的fragment能和在较近的fragment有一个接近的表现。
+级联阴影，根据到相机的距离进行分级，每级生成不同的Shadow Map(参见[官网Directional light shadows]())，保证在边缘的fragment能和在较近的fragment有一个接近的表现。
 
 <div align=center>
 
-![][CasadeShadowMap]
+![][CascadeShadowDivide]
 
-Casade Shadow Map
+Cascade Shadow Divide 
 
-![][CasadeShadowsCull]
+![][CascadeShadowMap]
 
-Casade Shadow Cull
+Cascade Shadow Map
+
+
+![][CascadeShadowsCull]
+
+Cascade Shadow Cull
 </div>
 
 ## 1.3. 不足
@@ -86,6 +91,7 @@ Casade Shadow Cull
 
 直接设置阴影剔除的参数。
 
-[CasadeShadowsCull]: ./culling-spheres.png
-[CasadeShadowMap]: ./one-light-four-cascades.png
+[CascadeShadowsCull]: ./culling-spheres.png
+[CascadeShadowMap]: ./one-light-four-cascades.png
+[CascadeShadowDivide]: ./ShadMapCascadeDiagram.svg
 
