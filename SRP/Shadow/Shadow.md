@@ -85,7 +85,7 @@ Cascade Shadow Cull
 
 进行阴影剔除的最初方式，大于当前distance的fragment不用进行阴影的相关判断。
 
-但是如果Max distance 太小，小于Cascade最大的半径，再加上精度问题就会出现阴影闪烁的情况。
+但是如果Max distance 太小，小于Cascade最大的半径，再加上精度问题就会出现阴影闪烁的情况。因此，需要在Cull跟Shader两处进行Max Distance进行判断。
 
 2. Culling Bias
 
