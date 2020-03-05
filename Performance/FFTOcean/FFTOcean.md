@@ -1,3 +1,23 @@
+<!-- TOC -->
+
+- [理论基础](#理论基础)
+    - [频谱和FFT](#频谱和fft)
+    - [海水频谱的统计学模型](#海水频谱的统计学模型)
+    - [数学建模](#数学建模)
+        - [时间的影响](#时间的影响)
+        - [IDFT](#idft)
+    - [法线](#法线)
+    - [尖浪](#尖浪)
+        - [挤压操作](#挤压操作)
+        - [雅可比行列式](#雅可比行列式)
+    - [IDFT的计算](#idft的计算)
+        - [用IFFT计算IDFT](#用ifft计算idft)
+        - [蝶式网络](#蝶式网络)
+        - [bitreverse算法](#bitreverse算法)
+    - [工程实现](#工程实现)
+
+<!-- /TOC -->
+
 实现一个FFT Ocean，主要参照(这个系列的blog)[https://zhuanlan.zhihu.com/p/64414956],国内翻译得比较详尽的一套FFT Ocean教程，具体的推导过程这里不再赘述。
 
 ## 理论基础
@@ -32,7 +52,7 @@ $w(k) = \sqrt{gk}$,g为重力加速度。
 
 $F_0(\vec k) = \frac {1}{\sqrt 2} (\xi_r + i\xi_i)\sqrt{P_h(\vec k)}$，$\xi_r$ 和$\xi_i$为相互独立的随机数，且均服从均值为0，标准差为1的正态分布，具体的算法在[博主的另一篇文章](https://zhuanlan.zhihu.com/p/67776340);
 
-$P_h(\vec k) = A \frac {e^{\frac {-1}{{kS}^2}}}{k^4}|\vec k \cdot \vec {wind}|$，$\vec wind$表示风向，$S = \frac {V^2}{g}$，V表示风速
+$P_h(\vec k) = A \frac {e^{\frac {-1}{{kS}^2}}}{k^4}|\vec k \cdot \vec {wind}|$，$\vec {wind}$表示风向，$S = \frac {V^2}{g}$，V表示风速
 
 ### 数学建模
 #### 时间的影响
@@ -68,13 +88,13 @@ $$\vec x = (\frac{x\cdot L}{N}, \frac{z\cdot L}{N}) $$
  $$ \nabla h(\vec x, t) = \sum_{\vec k} i\vec k h(\vec k, t)e^{i\vec k\cdot\vec x}$$
  
  法线向量为：
- $\vec N$ = normalize((0, 1, 0) - $(\nabla h_x(\vec x, t), 0, \nabla h_z(\vec x, t))$)
+ $\vec N$ = normalize((0, 1, 0) - $(\nabla h_x(\vec x, t), 0, \nabla h_z(\vec x, t))$
 
- ### 尖浪
- 类似GensterWave进行挤压，根据雅可比行列式判断有向面积是否为负值来判断当前是否为尖浪的白沫。具体的推导看篇首参考的blog。
- #### 挤压操作
- $$\vec x_{after} = \vec x_{before} +\lambda \vec D(\vec x, t) $$
- 其中，
+### 尖浪
+类似GensterWave进行挤压，根据雅可比行列式判断有向面积是否为负值来判断当前是否为尖浪的白沫。具体的推导看篇首参考的blog。
+#### 挤压操作
+$$\vec x_{after} = \vec x_{before} +\lambda \vec D(\vec x, t) $$
+其中，
 $$\vec D(\vec x, t) = \sum_{\vec k} -i\frac{\vec k}{k}h(\vec k,t)e^{i\vec k \cdot \vec x}$$
 #### 雅可比行列式
 $$J(\vec x) =\left| \begin{matrix} J_xx & J_xz \\ J_zx & J_zz \end{matrix} \right| $$
@@ -87,7 +107,7 @@ $$J_xx = \frac{\delta x^{\prime}}{\delta x} = 1 + \lambda\frac{\delta D_x(\vec x
 
  $$J_zx = \frac{\delta z^{\prime}}{\delta x} = \lambda\frac{\delta D_z(\vec x, t)}{\delta x}$$ 
 
-#### IDFT的计算
+### IDFT的计算
 这一节的内容主要是公式的推导，具体过程还是看篇首提到的blog，这里只写结论和相关知识点。
 #### 用IFFT计算IDFT
 基本思路：把N个输出拆分成$\frac N 2$的偶数输入和$\frac N 2$的奇数输入，分别进行计算之后进行汇总。
@@ -116,6 +136,23 @@ IFFT 网络
 #### bitreverse算法
 需要确定x(n) 和 X(k)中n和k的对应关系，采用的这个算法。
 对于在n位的x(n),经过N个点的蝶式网络之后，只需要把n化为$log_2 N$位的二进制数，然后reverse转为十进制，就得到了X(k)的k。
+
+### 工程实现
+主要是将第一部分的相关公式给化成第二部分IFFT的相关形式。具体不在赘述。
+$$A(u^{\prime}, v^{\prime}, t) = \frac {h((u^{\prime} - \frac M 2)* \frac L M, (v^{\prime} - \frac M 2), t)} {(-1)^{(v^{\prime} - \frac M 2)*\frac L M}} $$
+$$B(u^\prime, v^\prime, t) = h^{\prime\prime}((u^\prime - \frac M 2) * \frac L M, m^\prime, t)(-1)^{m^\prime}$$
+$$C(u^\prime, m^\prime, t) = \frac {h^{\prime\prime}((u^\prime - \frac M 2) * \frac L M, m^\prime, t)} {(-1)^{(u^\prime - \frac N 2) * \frac L M}}$$
+$$D(n^\prime, m^\prime, t) = h^\prime(n^\prime, m^\prime, t)(-1)^{(n^\prime)}$$
+
+其中，
+$$h^\prime(n^\prime, m^\prime, t) = h(\frac {2\pi(n^\prime - \frac N 2)} L, \frac {2\pi(m^\prime - \frac N 2)} L, t)$$
+$$h^{\prime\prime}(u^\prime - \frac N 2, m^\prime, t) = (-1)^{u^\prime - \frac N 2} \sum_{n^\prime = 0}^{N - 1}h^\prime(n^\prime, m^\prime, t)e^{i\frac {2\pi n^\prime (u^\prime - \frac M 2) \frac L M} N }$$
+
+因此有：
+$$A(u^\prime, v^\prime, t) = \sum_{m^\prime = 0}^{N-1}B(u^\prime, m^\prime, t)e^{i\frac {2\pi m^\prime (v^\prime - M / 2) * L/M} N} $$
+
+$$C(u^\prime, m^\prime, t) = \sum_{n^\prime = 0}^{N - 1}D(n^\prime, m^\prime, t)e^{i\frac {2\pi n^\prime{v^\prime - N/2}*L/M } N}$$
+在D中带入第一部分的统计学海洋频谱公式之后，由下而上使用IFFT即可计算得到$A(u^\prime, v^\prime, t)$即为最后的高度。
 
 [GradVecGraph]: ./grad_vec.jpg
 [IFFTGraph]: ./ifft.jpg
