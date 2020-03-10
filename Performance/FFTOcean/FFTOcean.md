@@ -18,7 +18,7 @@
 
 <!-- /TOC -->
 
-实现一个FFT Ocean，主要参照(这个系列的blog)[https://zhuanlan.zhihu.com/p/64414956],国内翻译得比较详尽的一套FFT Ocean教程，具体的推导过程这里不再赘述。
+实现一个FFT Ocean，主要参照[这个系列的blog](https://zhuanlan.zhihu.com/p/64414956),国内翻译得比较详尽的一套FFT Ocean教程，具体的推导过程这里不再赘述。
 
 ## 理论基础
 ### 频谱和FFT
@@ -44,7 +44,7 @@ $$F(\vec k,t) = F_0(\vec k)e^{iw(k)t} + F_0^*(-\vec k)e^{-iw(k)t} $$
 
 $\vec k$表示频谱中的采样坐标;
 
-$F_0^*$ 表示F_0的共轭复数;
+$F_0^*$ 表示$F_0$的共轭复数;
 
 k表示$\vec k$的模;
 
@@ -52,7 +52,7 @@ $w(k) = \sqrt{gk}$,g为重力加速度。
 
 $F_0(\vec k) = \frac {1}{\sqrt 2} (\xi_r + i\xi_i)\sqrt{P_h(\vec k)}$，$\xi_r$ 和$\xi_i$为相互独立的随机数，且均服从均值为0，标准差为1的正态分布，具体的算法在[博主的另一篇文章](https://zhuanlan.zhihu.com/p/67776340);
 
-$P_h(\vec k) = A \frac {e^{\frac {-1}{{kS}^2}}}{k^4}|\vec k \cdot \vec {wind}|$，$\vec {wind}$表示风向，$S = \frac {V^2}{g}$，V表示风速
+$P_h(\vec k) = A \frac {e^{\frac {-1}{{(kS)}^2}}}{k^4}|\vec k \cdot \vec {wind}|$，$\vec {wind}$表示风向，$S = \frac {V^2}{g}$，V表示风速
 
 ### 数学建模
 #### 时间的影响
