@@ -119,6 +119,7 @@ $$x(n) = \begin{cases} G(n) + W_N^{-n} H(n) \\ G(n - \frac {N}{2}) + W_N^{-n}H(n
 其中，
 $$G(n) = \frac 1 N \sum_{k=0}^{\frac N 2 - 1} g(k)e^{i\frac {2\pi kn}{\frac N 2}} = \frac 1 N \sum_{k=0}^{\frac N 2 - 1} x(2k)e^{i\frac {2\pi kn}{\frac N 2}}, n \in \{0, 1, ..., \frac N 2 - 1\}$$
 $$H(n) = \frac 1 N \sum_{k=0}^{\frac N 2 - 1} h(k)e^{i\frac {2\pi kn}{\frac N 2}} = \frac 1 N \sum_{k=0}^{\frac N 2 - 1} x(2k+1)e^{i\frac {2\pi kn}{\frac N 2}}, n \in \{0, 1, ..., \frac N 2 - 1\}$$
+$$W_n^k = e^{-i\frac{2\pi k}{N}} $$
 
 #### 蝶式网络
 上面的表现是一种迭代的方式，每次计算后的输出作为后面的输入再次进入后面的计算。另一种直观的表现方式就是蝶式网络，虽然计算上的过程差不多，但是会影响设计和理解。具体就是只有一次输入输出，把每次的计算展开。
@@ -158,9 +159,14 @@ $$C(u^\prime, m^\prime, t) = \sum_{n^\prime = 0}^{N - 1}D(n^\prime, m^\prime, t)
 #### 工程实现
 ##### IFFT的实现
 使用ComputeShader实现，把权重系数也即$W_m^n$提前计算做蝶形lut。
-每一个阶段的输出会变成下一个阶段的输入，当前阶段的输入不会空置，之后可以转换成下一个阶段的输出，采用ping pong texture的方式，应对这种平凡输出的情况。
+每一个阶段的输出会变成下一个阶段的输入，当前阶段的输入不会空置，之后可以转换成下一个阶段的输出，采用ping pong texture的方式，应对这种频繁输出的情况。
+每个阶段的计算数据又是相互独立的，因此采用compute shader的方式在每个阶段进行并行计算，这样进一步减少了运算时间。
 
 #### 蝶形lut的实现
+因为是IFFT，所以这里的lut中存的其实是$W_N^{-k}$。而$W_N^{-k}$在采样方位确定之后是确定的，可以离线的方式先计算出来。
+又有$W_N^{-k - N/2} = -W_N^{-k}$，这里的－放到ComputeShader中一起进行计算，所以在这里实际上只计算一次，存两次。
+在开始确定了采样数之后，阶段数也能直接得出，这样的话，每个$W_N^{-k}$的计算实际上是相互独立的，在compute shader中能一次性都算出来。
+
 
 [GradVecGraph]: ./grad_vec.jpg
 [IFFTGraph]: ./ifft.jpg
