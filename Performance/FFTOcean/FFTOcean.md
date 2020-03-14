@@ -119,7 +119,7 @@ $$x(n) = \begin{cases} G(n) + W_N^{-n} H(n) \\ G(n - \frac {N}{2}) + W_N^{-n}H(n
 其中，
 $$G(n) = \frac 1 N \sum_{k=0}^{\frac N 2 - 1} g(k)e^{i\frac {2\pi kn}{\frac N 2}} = \frac 1 N \sum_{k=0}^{\frac N 2 - 1} x(2k)e^{i\frac {2\pi kn}{\frac N 2}}, n \in \{0, 1, ..., \frac N 2 - 1\}$$
 $$H(n) = \frac 1 N \sum_{k=0}^{\frac N 2 - 1} h(k)e^{i\frac {2\pi kn}{\frac N 2}} = \frac 1 N \sum_{k=0}^{\frac N 2 - 1} x(2k+1)e^{i\frac {2\pi kn}{\frac N 2}}, n \in \{0, 1, ..., \frac N 2 - 1\}$$
-$$W_n^k = e^{-i\frac{2\pi k}{N}} $$
+$$W_n^k = e^{-i\frac{2\pi k}{N}}$$
 
 #### 蝶式网络
 上面的表现是一种迭代的方式，每次计算后的输出作为后面的输入再次进入后面的计算。另一种直观的表现方式就是蝶式网络，虽然计算上的过程差不多，但是会影响设计和理解。具体就是只有一次输入输出，把每次的计算展开。
