@@ -97,7 +97,7 @@ $$\vec x_{after} = \vec x_{before} +\lambda \vec D(\vec x, t) $$
 其中，
 $$\vec D(\vec x, t) = \sum_{\vec k} -i\frac{\vec k}{k}h(\vec k,t)e^{i\vec k \cdot \vec x}$$
 #### 雅可比行列式
-$$J(\vec x) =\left| \begin{matrix} J_xx & J_xz \\ J_zx & J_zz \end{matrix} \right| $$
+$$J(\vec x) =\left| \begin{matrix} J_{xx} & J_{xz} \\ J_{zx} & J_{zz} \end{matrix} \right| $$
 其中，
 $$J_xx = \frac{\delta x^{\prime}}{\delta x} = 1 + \lambda\frac{\delta D_x(\vec x, t)}{\delta x}$$ 
  
@@ -107,6 +107,7 @@ $$J_xx = \frac{\delta x^{\prime}}{\delta x} = 1 + \lambda\frac{\delta D_x(\vec x
 
  $$J_zx = \frac{\delta z^{\prime}}{\delta x} = \lambda\frac{\delta D_z(\vec x, t)}{\delta x}$$ 
 
+如果$J(\vec x)$<0则表示是尖浪。
 ### IDFT的计算
 这一节的内容主要是公式的推导，具体过程还是看篇首提到的blog，这里只写结论和相关知识点。
 #### 用IFFT计算IDFT
@@ -137,7 +138,7 @@ IFFT 网络
 需要确定x(n) 和 X(k)中n和k的对应关系，采用的这个算法。
 对于在n位的x(n),经过N个点的蝶式网络之后，只需要把n化为$log_2 N$位的二进制数，然后reverse转为十进制，就得到了X(k)的k。
 
-### 工程实现
+#### 联系
 主要是将第一部分的相关公式给化成第二部分IFFT的相关形式。具体不在赘述。
 $$A(u^{\prime}, v^{\prime}, t) = \frac {h((u^{\prime} - \frac M 2)* \frac L M, (v^{\prime} - \frac M 2), t)} {(-1)^{(v^{\prime} - \frac M 2)*\frac L M}} $$
 $$B(u^\prime, v^\prime, t) = h^{\prime\prime}((u^\prime - \frac M 2) * \frac L M, m^\prime, t)(-1)^{m^\prime}$$
@@ -153,6 +154,13 @@ $$A(u^\prime, v^\prime, t) = \sum_{m^\prime = 0}^{N-1}B(u^\prime, m^\prime, t)e^
 
 $$C(u^\prime, m^\prime, t) = \sum_{n^\prime = 0}^{N - 1}D(n^\prime, m^\prime, t)e^{i\frac {2\pi n^\prime{v^\prime - N/2}*L/M } N}$$
 在D中带入第一部分的统计学海洋频谱公式之后，由下而上使用IFFT即可计算得到$A(u^\prime, v^\prime, t)$即为最后的高度。
+
+#### 工程实现
+##### IFFT的实现
+使用ComputeShader实现，把权重系数也即$W_m^n$提前计算做蝶形lut。
+每一个阶段的输出会变成下一个阶段的输入，当前阶段的输入不会空置，之后可以转换成下一个阶段的输出，采用ping pong texture的方式，应对这种平凡输出的情况。
+
+#### 蝶形lut的实现
 
 [GradVecGraph]: ./grad_vec.jpg
 [IFFTGraph]: ./ifft.jpg
