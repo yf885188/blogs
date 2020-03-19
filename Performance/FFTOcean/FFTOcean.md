@@ -65,13 +65,13 @@ $$h(\vec x,t) = \sum_{w} F(\vec k, t)e^{iwx}$$
 #### IDFT
 因为计算机无法处理无限连续的点进行处理，所以这里采用的是离散采样的方式，也即离散傅里叶逆变换IDFT。
 
-采样点的选择（原文空间位置和频域采样点数一致，私以为不用）：
+采样点的选择：
 
 频谱： 保证在一个patch中能覆盖一个$2\pi$的频率范围，这样之后的patch拼接会相对方便一些。采样(M,M)尺寸范围上的点，可以得到频谱的采样点公式为
 
 $$\vec k = ({\frac {x \cdot 2\pi}{L}}, \frac {y \cdot 2\pi}{L})$$
 
-其中$x,y \in\{ -\frac{M}{2}, ...., \frac{M}{2}-1\}$。
+其中$x,y \in\{ -\frac{N}{2}, ...., \frac{N}{2}-1\}$。
 
 空间位置：跟频谱类似，采样在(N,N)尺寸范围上的点。采样公式为：
 $$\vec x = (\frac{x\cdot L}{N}, \frac{z\cdot L}{N}) $$
@@ -144,19 +144,19 @@ IFFT 网络
 
 #### 联系
 主要是将第一部分的相关公式给化成第二部分IFFT的相关形式。具体不在赘述。
-$$A(u^{\prime}, v^{\prime}, t) = \frac {h((u^{\prime} - \frac M 2)* \frac L M, (v^{\prime} - \frac M 2), t)} {(-1)^{(v^{\prime} - \frac M 2)*\frac L M}} $$
-$$B(u^\prime, v^\prime, t) = h^{\prime\prime}((u^\prime - \frac M 2) * \frac L M, m^\prime, t)(-1)^{m^\prime}$$
-$$C(u^\prime, m^\prime, t) = \frac {h^{\prime\prime}((u^\prime - \frac M 2) * \frac L M, m^\prime, t)} {(-1)^{(u^\prime - \frac N 2) * \frac L M}}$$
+$$A(u^{\prime}, v^{\prime}, t) = \frac {h((u^{\prime} - \frac N 2), (v^{\prime} - \frac M 2), t)} {(-1)^{(v^{\prime} - \frac N 2)}} $$
+$$B(u^\prime, v^\prime, t) = h^{\prime\prime}((u^\prime - \frac N 2), m^\prime, t)(-1)^{m^\prime}$$
+$$C(u^\prime, m^\prime, t) = \frac {h^{\prime\prime}((u^\prime - \frac N 2), m^\prime, t)} {(-1)^{(u^\prime - \frac N 2)}}$$
 $$D(n^\prime, m^\prime, t) = h^\prime(n^\prime, m^\prime, t)(-1)^{(n^\prime)}$$
 
 其中，
 $$h^\prime(n^\prime, m^\prime, t) = h(\frac {2\pi(n^\prime - \frac N 2)} L, \frac {2\pi(m^\prime - \frac N 2)} L, t)$$
-$$h^{\prime\prime}(u^\prime - \frac N 2, m^\prime, t) = (-1)^{u^\prime - \frac N 2} \sum_{n^\prime = 0}^{N - 1}h^\prime(n^\prime, m^\prime, t)e^{i\frac {2\pi n^\prime (u^\prime - \frac M 2) \frac L M} N }$$
+$$h^{\prime\prime}(u^\prime - \frac M 2, m^\prime, t) = (-1)^{u^\prime - \frac N 2} \sum_{n^\prime = 0}^{N - 1}h^\prime(n^\prime, m^\prime, t)e^{i\frac {2\pi n^\prime (u^\prime - \frac N 2)} N }$$
 
 因此有：
-$$A(u^\prime, v^\prime, t) = \sum_{m^\prime = 0}^{N-1}B(u^\prime, m^\prime, t)e^{i\frac {2\pi m^\prime (v^\prime - M / 2) * L/M} N} $$
+$$A(u^\prime, v^\prime, t) = \sum_{m^\prime = 0}^{N-1}B(u^\prime, m^\prime, t)e^{i\frac {2\pi m^\prime (v^\prime - N / 2)} N} $$
 
-$$C(u^\prime, m^\prime, t) = \sum_{n^\prime = 0}^{N - 1}D(n^\prime, m^\prime, t)e^{i\frac {2\pi n^\prime{v^\prime - N/2}*L/M } N}$$
+$$C(u^\prime, m^\prime, t) = \sum_{n^\prime = 0}^{N - 1}D(n^\prime, m^\prime, t)e^{i\frac {2\pi n^\prime{(u^\prime - N/2)}} N}$$
 在D中带入第一部分的统计学海洋频谱公式之后，由下而上使用IFFT即可计算得到$A(u^\prime, v^\prime, t)$即为最后的高度。
 
 #### 工程实现
