@@ -17,7 +17,8 @@
         - [联系](#联系)
         - [工程实现](#工程实现)
             - [IFFT的实现](#ifft的实现)
-        - [蝶形lut的实现](#蝶形lut的实现)
+            - [蝶形lut的实现](#蝶形lut的实现)
+            - [待解决的点](#待解决的点)
 
 <!-- /TOC -->
 
@@ -55,7 +56,7 @@ $w(k) = \sqrt{gk}$,g为重力加速度。
 
 $F_0(\vec k) = \frac {1}{\sqrt 2} (\xi_r + i\xi_i)\sqrt{P_h(\vec k)}$，$\xi_r$ 和$\xi_i$为相互独立的随机数，且均服从均值为0，标准差为1的正态分布，具体的算法在[博主的另一篇文章](https://zhuanlan.zhihu.com/p/67776340);
 
-$P_h(\vec k) = A \frac {e^{\frac {-1}{{(kS)}^2}}}{k^4}|\vec k \cdot \vec {wind}|$，$\vec {wind}$表示风向，$S = \frac {V^2}{g}$，V表示风速
+$P_h(\vec k) = A \frac {e^{\frac {-1}{{(kS)}^2}}}{k^4}|\vec k \cdot \vec {wind}|^2$，$\vec {wind}$表示风向，$S = \frac {V^2}{g}$，V表示风速
 
 ### 数学建模
 #### 时间的影响
@@ -154,10 +155,17 @@ $$h^\prime(n^\prime, m^\prime, t) = h(\frac {2\pi(n^\prime - \frac N 2)} L, \fra
 $$h^{\prime\prime}(u^\prime - \frac M 2, m^\prime, t) = (-1)^{u^\prime - \frac N 2} \sum_{n^\prime = 0}^{N - 1}h^\prime(n^\prime, m^\prime, t)e^{i\frac {2\pi n^\prime (u^\prime - \frac N 2)} N }$$
 
 因此有：
-$$A(u^\prime, v^\prime, t) = \sum_{m^\prime = 0}^{N-1}B(u^\prime, m^\prime, t)e^{i\frac {2\pi m^\prime (v^\prime - N / 2)} N} $$
+$$A(u^\prime, v^\prime, t) = \sum_{m^\prime = 0}^{N-1}B(u^\prime, m^\prime, t)e^{i\frac {2\pi m^\prime v^\prime} N} $$
 
-$$C(u^\prime, m^\prime, t) = \sum_{n^\prime = 0}^{N - 1}D(n^\prime, m^\prime, t)e^{i\frac {2\pi n^\prime{(u^\prime - N/2)}} N}$$
+$$C(u^\prime, m^\prime, t) = \sum_{n^\prime = 0}^{N - 1}D(n^\prime, m^\prime, t)e^{i\frac {2\pi n^\prime{u^\prime}} N}$$
 在D中带入第一部分的统计学海洋频谱公式之后，由下而上使用IFFT即可计算得到$A(u^\prime, v^\prime, t)$即为最后的高度。
+
+
+<div align=center>
+
+![WorkFlow][WorkFlow]
+
+</div>
 
 #### 工程实现
 ##### IFFT的实现
@@ -165,12 +173,16 @@ $$C(u^\prime, m^\prime, t) = \sum_{n^\prime = 0}^{N - 1}D(n^\prime, m^\prime, t)
 每一个阶段的输出会变成下一个阶段的输入，当前阶段的输入不会空置，之后可以转换成下一个阶段的输出，采用ping pong texture的方式，应对这种频繁输出的情况。
 每个阶段的计算数据又是相互独立的，因此采用compute shader的方式在每个阶段进行并行计算，这样进一步减少了运算时间。
 
-#### 蝶形lut的实现
+##### 蝶形lut的实现
 因为是IFFT，所以这里的lut中存的其实是$W_N^{-k}$。而$W_N^{-k}$在采样方位确定之后是确定的，可以离线的方式先计算出来。
 又有$W_N^{-k - N/2} = -W_N^{-k}$，这里的－放到ComputeShader中一起进行计算，所以在这里实际上只计算一次，存两次。
 在开始确定了采样数之后，阶段数也能直接得出，这样的话，每个$W_N^{-k}$的计算实际上是相互独立的，在compute shader中能一次性都算出来。
 
+##### 待解决的点和未解决的bug
+- 生成spectrum和第一次IFFT完毕之后，能否直接调换位置，不在IFFT compute shader这一层调用bitreverse计算
+- RenderTexture 生成asset第一次的时候无效
 
 [GradVecGraph]: ./grad_vec.jpg
 [IFFTGraph]: ./ifft.jpg
 [BufferFlyIFFT]: ./butterfly_ifft.jpg
+[WorkFlow]: ./work_flow.jpg
