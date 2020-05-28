@@ -32,3 +32,13 @@ static public void SaveRenderTextureToPNG(RenderTexture rt, string path)
 ```
 
 #### RenderTexture 保存成Asset
+RenderTexutre 作为一个GPU上分配的一块显存，想要持久化保存的话，最好保存成图片，不要通过asset的方式进行持续化保存。
+
+#### Shader 中的loop展开
+Shader中写loop的时候需要根据变量设置循环的次数，在有些平台上无法正常展开，或者不支持dynamic loop。可以尝试一下方式：
+- Opengl转到Dx11及以上平台
+- 在shader中添加平台相关的控制：
+```
+#pragma exclude_renderers d3d11_9x
+#pragma target 4.0
+```
