@@ -42,3 +42,13 @@ Shader中写loop的时候需要根据变量设置循环的次数，在有些平�
 #pragma exclude_renderers d3d11_9x
 #pragma target 4.0
 ```
+
+#### URP Additional Light Shadow 只支持聚光灯光源阴影
+
+<div align="center">
+
+![][AdditionalShadowOnlySpot]
+
+</div>
+
+[AdditionalShadowOnlySpot]: ./AddtionalShadowOnlySpot.png
