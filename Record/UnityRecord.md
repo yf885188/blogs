@@ -51,4 +51,11 @@ Shader中写loop的时候需要根据变量设置循环的次数，在有些平�
 
 </div>
 
+#### 修改材质属性
+
+如果通过get material的方式先获取再复制，会先将material实例化。并且在有些情况下会出现bug，比如在ios中实际上给transform添加了多材质等。
+
+应该使用MaterialPropertyBlock的方式，使用封装的方式来更新材质属性。
+
+
 [AdditionalShadowOnlySpot]: ./AddtionalShadowOnlySpot.png
