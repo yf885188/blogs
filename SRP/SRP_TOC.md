@@ -4,5 +4,6 @@
 2. [Draw Calls](./DrawCalls/DrawCalls.md)  
 3. [平行光](./Lights/DirectionalLights.md)  
 4. [阴影](./Shadow/Shadow.md)  
+5. [光线烘焙](./BakedLight/BakedLight.md)
 
 
