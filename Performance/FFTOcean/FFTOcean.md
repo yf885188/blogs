@@ -103,13 +103,13 @@ $$\vec D(\vec x, t) = \sum_{\vec k} -i\frac{\vec k}{k}h(\vec k,t)e^{i\vec k \cdo
 #### 雅可比行列式
 $$J(\vec x) =\left| \begin{matrix} J_{xx} & J_{xz} \\ J_{zx} & J_{zz} \end{matrix} \right| $$
 其中，
-$$J_xx = \frac{\delta x^{\prime}}{\delta x} = 1 + \lambda\frac{\delta D_x(\vec x, t)}{\delta x}$$ 
+$$J_{xx} = \frac{\delta x^{\prime}}{\delta x} = 1 + \lambda\frac{\delta D_x(\vec x, t)}{\delta x}$$ 
  
- $$J_zz = \frac{\delta z^{\prime}}{\delta z} = 1 + \lambda\frac{\delta D_z(\vec x, t)}{\delta z}$$ 
+ $$J_{zz} = \frac{\delta z^{\prime}}{\delta z} = 1 + \lambda\frac{\delta D_z(\vec x, t)}{\delta z}$$ 
 
- $$J_xz = \frac{\delta x^{\prime}}{\delta z} = \lambda\frac{\delta D_x(\vec x, t)}{\delta z}$$ 
+ $$J_{xz} = \frac{\delta x^{\prime}}{\delta z} = \lambda\frac{\delta D_x(\vec x, t)}{\delta z}$$ 
 
- $$J_zx = \frac{\delta z^{\prime}}{\delta x} = \lambda\frac{\delta D_z(\vec x, t)}{\delta x}$$ 
+ $$J_{zx} = \frac{\delta z^{\prime}}{\delta x} = \lambda\frac{\delta D_z(\vec x, t)}{\delta x}$$ 
 
 如果$J(\vec x)$<0则表示是尖浪。
 ### IDFT的计算
