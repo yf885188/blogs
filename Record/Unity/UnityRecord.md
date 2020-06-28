@@ -58,4 +58,7 @@ Shader中写loop的时候需要根据变量设置循环的次数，在有些平�
 应该使用MaterialPropertyBlock的方式，使用封装的方式来更新材质属性。
 
 
+#### 平面在烘焙lightmap和ShadowMask的时候背面效果不对的问题
+推测是因为平面没有厚度造成的，减少平面的此类应用。
+
 [AdditionalShadowOnlySpot]: ./AddtionalShadowOnlySpot.png
