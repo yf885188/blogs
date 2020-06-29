@@ -17,3 +17,5 @@
 - 没有实时光情况下的处理
 
 ## shadowMask 模式
+跟distance shadowmask的区别
+- 用ShadowMask的静态物体不再有realtime light的阴影
