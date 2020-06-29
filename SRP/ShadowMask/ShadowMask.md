@@ -18,4 +18,7 @@
 
 ## shadowMask 模式
 跟distance shadowmask的区别
-- 用ShadowMask的静态物体不再有realtime light的阴影
+- 用ShadowMask的静态物体不再有realtime light的阴影（实际上是不采用混合的方式，两者取影响较小的那一个进行计算）
+
+# 多光源
+- 最多支持4光源，用一个float4记录
