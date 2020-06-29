@@ -11,4 +11,9 @@
 动态物体要享受到ShadowMask的影响，只能通过Occlusion Probes来实现。
 
 # 混合阴影
-## 
+## distance shadowmask 模式
+- 采样shadow mask
+- 跟实时光的shadow进行混合
+- 没有实时光情况下的处理
+
+## shadowMask 模式
