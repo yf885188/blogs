@@ -98,4 +98,13 @@
 - 检查Asset修改的更新
 - 构建Asset更新：根据addressable_content_state.bin来创建asset bundles。
 > Dynamic AssetBundle都是按组一起更新的，Static AssetBundle则可以单独更新Assetbundle
+
+## 托管服务设置
+
+## 内存管理
+详细的可以看这篇[blog](https://zhuanlan.zhihu.com/p/98663058)。
+> 需要注意： asset引用计数归零了，不一定资源被卸载了，跟asset bundle的卸载时机以及自己的卸载方式有关。
+
+## 分析器
+
 [AddressableConcepts]: ./AddressableConcepts.jpg
