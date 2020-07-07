@@ -24,3 +24,5 @@ ILRuntimeType、ILRuntimeMethodInfo、ILRuntimeFieldInfo等。
 - 反射会使用List[] Objects来传参增加装箱拆箱消耗，使用CLR绑定可以绕过这个问题。
 - 跨域的值类型也会导致大量GC，通过值类型绑定来解决这个问题。
 - 使用InvocationContext
+
+> 实质上是将在堆上进行内存分配的GC机制转移到了栈上。通过在栈上直接读取参数，分配的内存也是栈的内存，跟堆无关了。
