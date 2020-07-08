@@ -34,13 +34,14 @@ ILRuntimeType、ILRuntimeMethodInfo、ILRuntimeFieldInfo等。
 - 使用ILRuntime的绑定接口把CLR重定向的代码注册到Appdomain。
 - Unity主工程获取ILRuntime的Appdomain，然后找到对应的type.method。
 - 调用Appdomain.Invoke来调用对应的Method。调用过程中，通过IL解释器（ILInteperter）来获取Method正确的IL编码：如果进行了重定向，走重定向后的method；没有重定向，走CLRMethod.Invoke。
+
 <div align="center">
 
 ![CLRBinding工作流][CLRBinding_WorkingFlow]
 
 </div>
 
-### 跟使用反射相比的优势
+### 相比反射的优势
 - 直接对ILRuntime的托管栈进行操作，避免了使用反射方式带来的GC消耗
 
 <div align="center">
@@ -65,6 +66,18 @@ CLRBinding方式
 - 加载程序集： 起相应的协程；加载热更dll；加载热更dll对应的pdb；加载程序集；
 - 初始化ILRuntimeDLL: 委托适配器；协程适配器；值类型绑定；
 - CLR绑定。
+
+## 实际需要映射的类型
+可以参考ILRuntime官方demo里面提供的Hotfix_Project.sln.
+- CLR重定向
+- CLR绑定
+- 继承/实例化映射： 适配器模式
+- 委托映射：适配器模式
+- 协程映射： 适配器模式；协程的本质是个状态机；需要实现IEnumerator<System.Object>, IEnumerator, IDisposable等；结合之前，要实现的接口有Current、Dispose、MoveNext等。
+- Jason映射
+- MonoBehaviour映射：适配器模式；与协程映射类似，需要实现Monobehaviour的常用接口。
+- 值类型映射: 值类型相关的操作CLR重定向。
+
 
 # 保留问题：
 - 为啥ILRuntime访问Unity主工程只用Class.Method的方式，而反过来不是：Unity主工程走的是CLR或者MonoRuntime。
