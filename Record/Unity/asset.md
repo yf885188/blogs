@@ -1,6 +1,5 @@
 <!-- TOC -->
 
-- [Asset<!-- TOC -->](#asset---toc---)
     - [File GUIDs、Local IDs和Instance ID](#file-guidslocal-ids和instance-id)
     - [Object 生命周期](#object-生命周期)
     - [特殊目录](#特殊目录)
@@ -110,6 +109,13 @@
 
 # Addressable
 主要优势：把对Asset的规划、构建和加载进行解耦。
+
+<div align="center">
+
+![Addressable优势][AddressableAdvantages]
+
+</div>
+
 ## 相关概念
 <div align="center">
 
@@ -141,3 +147,4 @@
 ## 分析器
 
 [AddressableConcepts]: ./AddressableConcepts.jpg
+[AddressableAdvantages]: ./AddressableAdvantages.jpg
