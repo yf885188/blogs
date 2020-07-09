@@ -78,6 +78,8 @@ CLRBinding方式
 - MonoBehaviour映射：适配器模式；与协程映射类似，需要实现Monobehaviour的常用接口。
 - 值类型映射: 值类型相关的操作CLR重定向。
 
+# 实际流程
+参考[Blog](https://www.icode9.com/content-4-694479.html)。不过最后热更新的时候，只用Build->Update a Previous Build，不用Tools->Check for Content Update Restrictions。
 
 # 保留问题：
 - 为啥ILRuntime访问Unity主工程只用Class.Method的方式，而反过来不是：Unity主工程走的是CLR或者MonoRuntime。
