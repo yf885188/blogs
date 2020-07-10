@@ -9,7 +9,7 @@ Data-Oriented Tech Stack。一种面向数据/属性的编程模式。
 
 ## Entity
 ### Archetype
-实体上各种Components的组合又称[Archetype(原型)](https://docs.unity3d.com/Packages/com.unity.entities@0.11/api/Unity.Entities.EntityArchetype.html)。EntityManager通过Archetype将具有相同Components集的实体组织起来。
+实体上各种Components的组合又称[Archetype(原型)](https://docs.unity3d.com/Packages/com.unity.entities@0.11/api/Unity.Entities.EntityArchetype.html)。EntityManager通过Archetype将具有相同Components集/Archetype的实体组织起来。
 
 ### 创建Entity的方式
 单个创建：
@@ -52,5 +52,48 @@ ECS的数据都存在Components中，ECS在内存中通过Entity的原型来组�
 ##### Executeing Query
 - Job :
 - Method : ToEntityArray();ToComponentDataArray<T>();CreateArchetypeChunkArray();
+
+## Components
+Components用来组织游戏或者App的数据。Entity作为components集合的索引，Systems提供行为逻辑。
+ECS中的Components是一个结构，包含以下标记接口之一：
+- IComponentData : 针对GeneralPurposeComponents和ChunkComponents
+- IBufferElementData : 针对DynamicBuffers
+- ISharedComponentData : 通过Archetype内的值来对Entities进行组织和分类
+- ISystemStateComponentData ：把系统特定状态和实体进行绑定，并检测单个实体的创建和销毁状态
+- ISharedSystemStateComponentData ： 共享数据和系统数据的结合
+- BlobAssets
+
+EntityManager通过archetype来组织entities到一块块连续的Chunks（内存块），如图所示：
+
+<div align="center">
+
+![ECS 内存管理模型][ECSMemoryManagement]
+
+</div>
+
+此外：
+- SharedComponents和ChunkComponents不在图中，是因为ECS不在chunk中存储这两类Conponents。
+- DynamicBuffers也可以选择存在Chunk外。
+- 及时上面说的几类Components不在Chunk内，但是使用EntityQuery的时候也可以认为这几类跟其他的Components能统一进行处理。
+
+### IComponentData 
+- 为Entity保存Instance Data的结构。
+- 不应该存在除了公用方法以外接近Data的方式。
+- 在面向对象的Unity系统中，这类似于一个只包含变量的Component类。
+- 实质是struct而不是class，不要包含引用，要注意。原因是，ComponentData处在ChunkMemory中，而ChunkMemory不支持GC。
+
+#### Managed IComponentData
+- 声明为class
+- 能以一种零碎的方式把代码传给ECS，但是不适用于ISharedComponentData,也不适合之前的内存模型
+- 表面上跟值类型的IComponentData一样使用，但是ECS在内部处理上使用不用的方式，效率更低
+
+相比值类型的IComponentData的缺陷：
+- 不能使用Burst Compiler
+- 不能在Job 结构中使用
+- 不能使用ChunkMemory
+- 需要GC
+
+[ECSMemoryManagement]: ./ECSMemoryManagement.jpg
+
 
 
