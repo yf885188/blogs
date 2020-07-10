@@ -93,6 +93,106 @@ EntityManager通过archetype来组织entities到一块块连续的Chunks（内�
 - 不能使用ChunkMemory
 - 需要GC
 
+### SharedComponentData
+除了用原型，还可以根据SharedComponentData指定值给具有SharedComponentData的Entity分类。
+
+EntityManager会把具有同一SharedComponentData的entitis划分到一个Chunk。
+
+SharedComponentData改变之后，EntityManager会把Entit移动到一个不同的Chunk，或者直接新建一个Chunk。
+
+#### 注意
+- ECS存储SharedComponentData是以Chunk为单位，而不是以实体为单位
+- 因为这种内存布局，SharedComponentData对EntityQuery的效率十分友好
+- EntityManager.GetAllUniqueSharedComponents
+- ECS对SharedComponentData使用引用计数
+- 不要轻易改变SharedComponentData，因为会导致memcpy的调用。
+
+### SystemStateComponents
+SystemStateSharedComponents与其类似，只不过内存结构不一样，shared的表现跟上文的SharedComponentData类似。
+
+可以用来追踪资源的生命周期，而不用其他的回调。
+
+一般的Entity Destroy流程：
+- 找到Entity引用的所有Components
+- 销毁找到的这些Components
+- 把Entity ID 回收进行利用
+
+但是在有SystemStateComponets的情况下，ECS不会立即回收Entity ID，这让System在Entity Destroy之后有机会进行其他操作。当SystemStateComponents销毁之后，Entity ID才会被回收。
+
+#### 使用时机
+- 当添加Component时：有其他的Components，但是没有SystemStateComponent，说明Component刚添加。
+- 当删除Component时：没有对应的Components，但是有SystemStateComponents，说明Components刚刚被删除。
+
+#### 其他
+- 可见性：最好是系统外只读
+
+### DynamicBufferComponents
+DynamicBufferComponent可以把数组形式的数据跟实体联系起来。能处理大量的元素，并自动改变大小。
+
+类似于一个SharedComponent在一个Chunk绑一个，DynamicBufferComponents也是一个Chunk绑一个。
+
+#### 使用方式
+##### 声明ElementTypes
+从IBufferElementData派生
+
+##### 绑定到Entity
+- EntityMangerAddBuffer();
+- 使用原型，EntityManager.CreateEntity()；
+- 使用[GenerateAuthoringComponent]属性修饰IBufferElementData的派生类，然后在Editor模式直接给GameObject添加。在后台会生成从MonoBehavior派生的IntBufferElementAuthoring 。这种方式存在限制：单个C#文件中只能有一个带有这种属性的Component,且不能有另外一个MonoBehaviour；IBufferElementData只能有一个属性；不能有显示的内存分配。
+- 使用EntityCommandBuffer.AddBuffer。
+
+##### 访问Buffers
+- EntityManger.GetBuffer();
+- GetBufferFromEntity(): 跨Job调用；
+- Entities.ForEach: 配合lambda；
+- IJobChunk：BufferAccessor
+- ReinterpretingBuffers: 能保证原始buffer的安全性。是对原始data的引用。
+
+#### 其他
+- Buffer reference invalidation: [StructuralChanges](https://docs.unity3d.com/Packages/com.unity.entities@0.11/manual/sync_points.html#structural-changes)会导致Entities从原Chunk移动到另一个Chunk，这样会导致原来的Buffer绑定失效导致错误。
+
+### ChunkComponentData
+把存储于一个特殊Chunk里的数据应用到所有entities。
+
+直接跟Archetype绑定。
+
+#### 使用方式
+##### 声明
+从IComponentData派生。
+
+##### 创建
+可用的接口：
+- AddComponent: 不能在Job里创建，也不能用EntityCommandBuffer创建
+- CreateEntities:  ComponentType.ChunkComponent<T>或者ComponentType.ChunkComponentReadOnly<T> 
+
+方式：
+- Chunk中的一个entity: EntityManager.AddChunkComponentData<T>()
+- EntityQuery: EntityManager.AddChunkComponentData<T>()
+- EntityArchetype: EntityManager.CreateArchetype() 和 EntityManager.CreateEntity()
+
+##### 读取
+- ArchetypeChunk实例: 配合 EntityManager.GetChunkComponentData<T>()
+- Chunk中的一个实例：EntityManager.GetChunkComponentData<T>()
+
+##### 更新
+接口：
+- ArchetypeChunk.SetChunkComponentData： 在IJobChunk中；
+- EntityManager.SetChunkComponentData：在主线程中。
+
+方式：
+- ArchetypeChunk实例：
+- 通过Entity实例：
+
+##### 删除
+接口：
+EntityManager.RemoveChunkComponent
+
+### 区别
+- ChunkComponentData：绑定原型，同一原型ChunkComponent的value是一样的
+- SharedComponentData: 绑定的类型一样，但是同一原型下不同Chunk中SharedComponent的值是不一样的，同一Chunk种SharedComponent的值是一样的
+- DynamicComponentData: 绑定的类型一样，同一Chunk下实际上是一个List
+- IComponent: 同一Chunk下的不同实体，数据都有差异
+
 [ECSMemoryManagement]: ./ECSMemoryManagement.jpg
 
 
