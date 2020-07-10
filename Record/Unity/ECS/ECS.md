@@ -189,9 +189,9 @@ EntityManager.RemoveChunkComponent
 
 ### 区别
 - ChunkComponentData：绑定原型，同一原型ChunkComponent的value是一样的
-- SharedComponentData: 绑定的类型一样，但是同一原型下不同Chunk中SharedComponent的值是不一样的，同一Chunk种SharedComponent的值是一样的
+- SharedComponentData: 绑定的类型一样，但是同一原型下不同Chunk中SharedComponent的值是不一样的，同一Chunk种SharedComponent的值是一样的。同类型的SharedComponentData不会划分原型，但是会划分Chunk。
 - DynamicComponentData: 绑定的类型一样，同一Chunk下实际上是一个List
-- IComponent: 同一Chunk下的不同实体，数据都有差异
+- IComponent: 同一Chunk下的不同实体，数据都有差异。
 
 [ECSMemoryManagement]: ./ECSMemoryManagement.jpg
 
