@@ -189,11 +189,90 @@ EntityManager.RemoveChunkComponent
 
 ### 区别
 - ChunkComponentData：绑定原型，同一原型ChunkComponent的value是一样的
-- SharedComponentData: 绑定的类型一样，但是同一原型下不同Chunk中SharedComponent的值是不一样的，同一Chunk种SharedComponent的值是一样的。同类型的SharedComponentData不会划分原型，但是会划分Chunk。
+- SharedComponentData: 绑定的类型一样，但是同一原型下不同Chunk中SharedComponent的值是不一样的，同一Chunk中SharedComponent的值是一样的。同类型的SharedComponentData不会划分原型，但是会划分Chunk。
 - DynamicComponentData: 绑定的类型一样，同一Chunk下实际上是一个List
 - IComponent: 同一Chunk下的不同实体，数据都有差异。
 
+## System
+改变ComponentData的状态。
+
+### Instantiating Systems
+- Unity ECS 会在Runtime时自动找到System并初始化。可以通过添加SystemAttributes来修改系统和安排系统殊勋等；
+- 一般这些系统都具有一个共同的父节点——CommponentSystemGroup：用来更新子系统；
+- 没有放到ComponentSystemGroup的system会被放到一个SimulationSystemGroup中。
+
+### System Types
+- SystemBase
+- EntityCommonandBufferSystem: 为其他系统提供一个EntityCommandBuffer。在一个SystemGroup的头尾各一个，用来应对StructuralChanges，就能够在一帧中使用更少的同步点。
+- ComponentSystemGroup：使用嵌套的结构来为其他的系统指定更新顺序。
+- GameObjectConversionSystem：编辑器模式下使用。把编辑器下的表现改成Runtime下的高效表现。
+
+### System的生命周期
+<div align="center">
+
+![System生命周期][ECSSystemLoop]
+
+</div>
+
+一般情况下，在OnUpdate()中组织作业来完成大部分工作，可通过以下方式：
+- Entities.ForEach
+- Job.WithCode
+- IJobChunk
+- C# Job System
+
+#### Entities.ForEach
+##### 选择Entities
+- EntityQuery:
+    - OptinalComponents: WithAll/WithAny/WithNone
+    - ChangeFiltering：只跟是否进行了Write Access有关系，跟访问之后有Data有没有变化没有关系。
+    - SharedComponentFiltering: WithSharedComponentFilter()
+
+##### 定义ForEach函数
+基本原则
+- 参数最高8个，高于8个需要自定义委托
+- 对于内置的委托，参数传递需要遵循一定顺序：值类型；ref 类型；in 只读类型
+
+###### 自定义委托
+> entity, entityInQueryIndex,nativeThreadIndex这几个参数一定要在自定义委托的参数列表中定义，顺序不限，但是不要加ref或者in。
+    - Entity entity : 参数名可变
+    - int entityInQueryIndex: 
+    - int nativeThreadIndex: 
+
+#### Job.WithCode
+- Job.WithCode 传入的lambda function 无法传参，只能用CaptureLocalVar的方式获取参数。
+- Schedule的使用存在限制：
+    - CapturedVar必须声明为NativeArray/NativeContainer/[BittableType](https://docs.microsoft.com/en-us/dotnet/framework/interop/blittable-and-non-blittable-types)(类似值类型)
+    - 即使只有一个值，也要用NativeArray返回
+
+##### 执行方式
+- Schedule：background
+- Run：main thread
+
+#### IJobChunk
+通过Chunk来迭代数据。在每个Chunk内，一个一个的修改entity的相关数据。
+
+优势：
+- 更加灵活跟清楚
+- 单个Chunk可以通过Archetype.Has<T>()的方式对Chunk进行手动过滤
+
+##### 步骤
+- 创建EntityQuery
+- 定义Job结构，必须包含ArchetypeChunkComponentType objects的成员，让job能直接访问，并设置读写权限
+- 初始化Job，在OnUpdate()中 Schedule job
+- 在Execute()中对job想要操作的NativeArray进行处理： 这个时候，chunkIndex == jobIndex
+
+##### 其他
+- change Filter：
+    - 默认的change filter只支持最多2个
+    - 自定义支持无上限： ArchetyepeChunk.Dichange() 和LastSystemVersion。LastSystemVersion需要在Onupdate中赋值。
+- Job的初始化生成要在每帧都进行，不能存成成员变量。
+
+#### Manual Iteration
+- IJobPareallelFor
+- EntityManager.GetAllEntities()/EntityManager.GetAllChunks()
+
 [ECSMemoryManagement]: ./ECSMemoryManagement.jpg
+[ECSSystemLoop]: ./SystemLoop.jpg
 
 
 
