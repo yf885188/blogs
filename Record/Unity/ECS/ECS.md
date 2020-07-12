@@ -148,6 +148,7 @@ DynamicBufferComponent可以把数组形式的数据跟实体联系起来。能�
 - IJobChunk：BufferAccessor
 - ReinterpretingBuffers: 能保证原始buffer的安全性。是对原始data的引用。
 
+
 #### 其他
 - Buffer reference invalidation: [StructuralChanges](https://docs.unity3d.com/Packages/com.unity.entities@0.11/manual/sync_points.html#structural-changes)会导致Entities从原Chunk移动到另一个Chunk，这样会导致原来的Buffer绑定失效导致错误。
 
@@ -233,7 +234,7 @@ EntityManager.RemoveChunkComponent
 - 对于内置的委托，参数传递需要遵循一定顺序：值类型；ref 类型；in 只读类型
 
 ###### 自定义委托
-> entity, entityInQueryIndex,nativeThreadIndex这几个参数一定要在自定义委托的参数列表中定义，顺序不限，但是不要加ref或者in。
+entity, entityInQueryIndex,nativeThreadIndex这几个参数一定要在自定义委托的参数列表中定义，顺序不限，但是不要加ref或者in。
     - Entity entity : 参数名可变
     - int entityInQueryIndex: 
     - int nativeThreadIndex: 
@@ -271,8 +272,64 @@ EntityManager.RemoveChunkComponent
 - IJobPareallelFor
 - EntityManager.GetAllEntities()/EntityManager.GetAllChunks()
 
+### System Update顺序
+#### SystemOrderingAttributes
+- UpdateInGroup：如果没加，就会被添加到World's SimulationSystemGroup
+- UpdateBefore 和 UpdateAfter: 针对同一组内
+- DisableAutoCreation : 在默认world初始化的时候不创建，必现显式创建和更新。
+
+#### DefaultSystemGroups
+主要分3类：
+
+<div align="center">
+
+![DefaultSystem][ECSDefaultSystem]
+
+</div>
+
+#### Mult Worlds
+##### ICustomBootstrap
+work flow：
+- 创建一个World和对应的最高层的几个组
+- 对于List中的system types：
+    - 找到对应的组别
+    - 如果找到了使用group.AddSystemToUpdateList()
+    - 如果没有找到，就添加这个system type到一个list中
+- 对最高层的groups调用group.SortSystemUpdatedList()
+    - 可以选择将他们添加到默认world groups
+- 将没有找到组别的 system list传给DefaultWorldInitialization进行初始化
+
+> ECS 通过反射查找ICustomBootstrap
+
+### Job Dependencies
+简单来说，就是job的数据依赖。
+
+需要注意的是：
+- 如果使用Entities.ForEach 或者Job.WithCode 来做job，则需要手动处理依赖。
+- 如果数据通过NativeArray进行传递，那么也需要手动处理依赖。
+- Structural Changes 会导致对ComponentData的直接饮用失效，要谨慎处理。
+
+### 查找data
+#### 在系统中entity data
+- 一般情况： GetComponent
+- dynamic buffers: 需要先获取BufferFromEntity
+
+#### 在IJobChunk中查找entity data
+接口：
+- ComponentDataFromEntity: 尽量保持Readonly
+- BufferFromEntity：
+
+### EntityCommandBuffers
+主要解决的问题：
+- 在job中无法访问EntityManager
+- 进行Structural Change，这导致创建了一个新的同步点，必须等到所有的job都完成。
+
+EntityCommandBuffer就是将在不同环境下的EntityManager相关命令给收集起来，在主线程中的合适时机进行处理。
+
+
+
 [ECSMemoryManagement]: ./ECSMemoryManagement.jpg
 [ECSSystemLoop]: ./SystemLoop.jpg
-
+[ECSDefaultSystem]: ./ECSDefaultSystem.jpg
 
 
