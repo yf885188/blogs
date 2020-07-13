@@ -326,10 +326,89 @@ work flow：
 
 EntityCommandBuffer就是将在不同环境下的EntityManager相关命令给收集起来，在主线程中的合适时机进行处理。
 
+## Sync Points 同步点
+指在程序执行过程中，需要等其他锁有scheduled的job完成的一个时间点。
 
+会限制在某一时间调用所有worker thread的能力。
+
+所以要尽量避免产生同步点。
+
+产生原因：当有其他的job在操作component数据的时候，你不能对当前的一些数据进行安全操作。
+
+### Structural Changes
+是Sync Points产生的主要原因。
+
+产生的方式：
+- 创建/销毁entities
+- 添加/移除components到entity上
+- 改变Shared Components的值（有可能导致chunk的重新划分）
+
+大致上说，一切会改变实体原型或者改变chunk内实体顺序的操作都是一个structural change。
+
+> structural change 只能在主线程上产生。
+
+产生的影响：
+- 产生Sync Points
+- 导致对Component Data的直接引用失效，比如： DynamicBuffer、ComponentSystemBase.GetComponentDataFromEntity等
+
+### 避免SyncPoints的产生
+- 用EntityCommandBuffer来延迟执行一些操作
+- 把会产生Structural changes的system放到一起进行Structural Changes操作
+
+## Write Group
+提供一种机制，能让一个系统能去影响另一个，即便没有修改其他系统的权限。
+
+Write Group实际上是确定系统中一个Component作为另一个Component过滤的子集，可以使用WriteGroupFilter进行过滤，实现一种对内可见，对外不可见的状态（对Creator可见，对User不可见的状态）。
+
+## Versions and Generations
+在ECS中用到了多种Version Num，他们通常是32位signed int。只要在C#中定了signed int的溢出，那么Version num就默认是一直增加的。
+
+- EntityId.version : 随着entity的销毁而增加。如果跟EntityManager的Version不一致，则代表entity已经被销毁
+- World.version : 随着EntityManager的销毁而增加
+- EntityDataManager.GlobalVerison : 在每个job component system更新之前。
+- System.LastSystemVersion : 在每个job component system 更新之后。
+- Chunk.ChangeVersion : 每次Chunk被写访问的时候
+- EntityManager.m_ComponetTypeOrderVersion[] : 针对non-shared component type, 随着每次对应type component的iterator失效的时候增长，也就是每次改变了这个实体类型的存储数组/顺序的时候。
+- SharedComponentDataManager.m_sharedComponentVersion[] : 如果带有SharedComponentData的chunk出现了structural change，就会更新这个version num
+
+# 实践
+## 架构
+
+<div align="center">
+
+![架构][GamePlayStructure]
+
+</div>
+
+## GameObject转换
+条件：
+- 有ConvertToEntity MonoBerhaviour Component
+- SubScene的一部分
+- 能转换的GameObject的子GameObject
+
+> 前两种的区别： Subscene的数据已经序列化到了硬盘上，runtime加载的时候会很快；ConvertToEntity这种还需要ECS每次在runtime的时候将GameObjects进行转换。
+
+可以通过IConvertGameObjectToEntity进行自定义的转换。
+
+## 生成ComponentData
+### IComponentData
+添加[GenerateAuthoringComponent]属性，背地做了如下工作：自动生成了一个包含component 公共域的Monobehaviour类，提供了一个Conversion方法来把这些域转换成Runtime的ComponentData。
+
+但是有以下限制：
+- 单个C#文件里面只能有一个AuthoringComponent，并且这个C#不能有其他的Monobehaviour。
+- ECS只反射公共域，并且跟component里面有相同的name
+- ECS把IComponentData中entity type的域跟Monobehaviour中的域对应起来，并把赋值的GameObjects或者Prefab转换成域中引用的Prefab
+
+### IBufferElementData
+[GenerateAuthoringComponent]属性也可以添加给IBufferElementData
+
+但是有以下限制：
+- 单个C#文件里面只能有一个AuthoringComponent，并且这个C#不能有其他的Monobehaviour。
+- IBufferElementData authoring component只能包含1个域
+- IBufferElementData 不能自动生成有隐式内存布局的类型（不受Chunk管制的类型？）
 
 [ECSMemoryManagement]: ./ECSMemoryManagement.jpg
 [ECSSystemLoop]: ./SystemLoop.jpg
 [ECSDefaultSystem]: ./ECSDefaultSystem.jpg
-
+[GamePlayStructure]: ./GamePlayStructure.jpg
 
