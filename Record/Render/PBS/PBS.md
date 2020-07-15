@@ -93,3 +93,8 @@ f_{DisneyDiffuse}(\vec{w_i}, \vec{w_o}) & = & \frac c \pi  [1 + (f_{D90} - 1)(1 
 
 整体的表达式：
 $$f_{cook-torrance} = K_df_{diffuse} + K_sf_{specular}$$
+
+# Render Equation
+[参考](https://www.zhihu.com/question/29182519/answer/43457554)
+
+$$L_o(\vec x, \vec{w_o}, \lambda, t) = L_e(\vec{x}, \vec{w_o}, \lambda, t) + \int_{\Omega} f_r(\vec{x}, \vec{w_i}, \vec{w_o}, \lambda, t) L_i(\vec{x}, \vec{w_i}, \lambda, t) (\vec{w_i}, \vec n)$$
