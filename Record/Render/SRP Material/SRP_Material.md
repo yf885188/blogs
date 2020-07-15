@@ -6,7 +6,8 @@
 </div>
 
 Shader中引用：
-Packages/com.unity.render-pipelines.universal/Shaders/
+- Packages/com.unity.render-pipelines.universal/Shaders/
+- Packages/com.unity.render-pipelines.core/ShaderLibrary/
 
 # 标准材质基本属性
 - Surface 选项：
@@ -44,7 +45,45 @@ Packages/com.unity.render-pipelines.universal/Shaders/
 - DepthOnly： 深度图渲染pass
 - Meta：跟GI有关
 - Universal2D
-  
+
+## UniversalForward Pass 工作流
+
+<div align="center" >
+
+```flow
+st=>start: 入口
+op_v_instance_init=>operation: [顶点着色器]初始化GPU_Instancing_ID相关
+op_v_stereo_init=>operation: [顶点着色器]初始化Stero相关
+op_v_ws_info_init=>operation: [顶点着色器]初始化Position、Normal、View_Dir、Fog_Factor等
+op_v_lm_Pre_GI_init=>operation: [顶点着色器]计算LightMap和SH相关
+op_v_shadow_init=>operation: [顶点着色器]计算Shadow UV
+op_f_instance_setup=>operation: [片元着色器]设置GPU_Instancing_ID相关
+op_f_stereo_setup=>operation: [片元着色器]设置Stero相关
+op_f_surface_init=>operation: [片元着色器]初始化Surface结构
+op_f_inputdata_init=>operation: [片元着色器]初始化InputData
+                            这其中比较重要的是对一些GI预处理的采样
+op_f_brdf_init=>operation: [片元着色器::PBR]初始化BRDF数据
+op_f_mix_realtime_baked_gi=>operation: [片元着色器::PBR]混合GI和Realtime的阴影/灯光效果
+                                      跟LightMap、ShadowMask有关。
+op_f_final_GI=>operation: [片元着色器::PBR]结合BRDF得到GI在表面的最后结果
+op_f_realtime_main_col=>operation: [片元着色器::PBR]根据BRDF和主光源信息计算PBS的效果
+                                正常包括GGX的法线分布函数、GGX的几何衰减和Fresnel表现。
+                                但是这里用的是Minimalist CookTorrance BRDF
+op_f_realtime_add_col=>operation: [片元着色器::PBR]计算Additive_lights的PBS光照效果
+op_f_vertex_light_col=>operation: [片元着色器::PBR]顶点光颜色
+op_f_emission_light_col=>operation: [片元着色器::PBR]自发光颜色
+op_f_fog_col=>operation: [片元着色器]混合fog
+
+e=>end: 输出像素值
+st->op_v_instance_init->op_v_stereo_init->op_v_ws_info_init->op_v_lm_Pre_GI_init->op_v_shadow_init
+op_v_shadow_init->op_f_instance_setup->op_f_stereo_setup->op_f_surface_init->op_f_inputdata_init
+op_f_inputdata_init->op_f_brdf_init->op_f_mix_realtime_baked_gi->op_f_final_GI->op_f_realtime_main_col->op_f_realtime_add_col->op_f_vertex_light_col->op_f_emission_light_col->op_f_fog_col->e
+
+```
+
+</div>
+
+
 # 相关文件分类
 | 文件名 | 作用|
 | :---: | :--- |
@@ -61,5 +100,7 @@ Packages/com.unity.render-pipelines.universal/Shaders/
 |ImageBasedLighting| IBL，[参考](https://zhuanlan.zhihu.com/p/26449508)|
 |Shadows|阴影的处理，包括：采样ShadowMap、处理级联阴影混合、阴影渐变等|
 |ShadowSamplingTent| 级联阴影采样的一些接口|
+
+
 
 [ShaderTOC]: ./ShaderTOC.jpg
