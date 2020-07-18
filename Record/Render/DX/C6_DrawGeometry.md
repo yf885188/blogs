@@ -1,0 +1,12 @@
+# 顶点结构和输入布局
+- 顶点结构: GPU RP中用到的数据。
+- 输入布局描述: 给GPU定义如何使用顶点结构的结构。
+  - D3D12_INPUT_LAYOUT_DESC
+  - D3D12_INPUT_ELEMENT_DESC
+    - SemanticName：语义名
+    - SemanticIndex: 同一语义不同的多个索引
+    - Format：顶点元素格式
+    - InputSlot：输入槽,向顶点装备阶段传递顶点数据
+    - AlignedByteOffset: 单个属性的偏移量
+    - InputSlotClass
+    - InstanceDataStepRate
