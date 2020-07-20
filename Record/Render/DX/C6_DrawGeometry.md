@@ -19,6 +19,10 @@
   - [6.2. 更新数据](#62-更新数据)
   - [6.3. 常量缓冲区描述符](#63-常量缓冲区描述符)
   - [6.4. 根签名和描述符表](#64-根签名和描述符表)
+- [编译着色器](#编译着色器)
+  - [离线编译](#离线编译)
+- [光栅器状态](#光栅器状态)
+- [流水线状态对象 Pipeline State Object(PSO)](#流水线状态对象-pipeline-state-objectpso)
 
 <!-- /TOC -->
 
@@ -132,5 +136,32 @@ Map和UnMap。
 - 根据根签名进行资源绑定
   - 用命令列表设置根签名和CBV
   - 根据绑定好的根签名来设置需要绑定的描述符表
+
+<div align="center">
+
+![RootSignature][RootSignatureMem]
+
+</div>
+
+# 编译着色器
+## 离线编译
+FXC 
+
+# 光栅器状态
+由结构体D3D12_RASTERIZER_DESC来表示：
+- FillMode:线框模式/实体模式
+- CullMode
+- FrontCounterClockwise：三角形绕序
+
+# 流水线状态对象 Pipeline State Object(PSO)
+创建：
+- D3D12_GRAPHICS_PIPELINE_STATE_DESC:
+  - InputLayout: 跟顶点结构联系上了
+- ID3D12Device::CreateGraphicPipelineState创建PSO对象
+
+[RootSignatureMem]: ./GPURootSignature.png
+  
+   
+
 
 
