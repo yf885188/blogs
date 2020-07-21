@@ -23,6 +23,8 @@
   - [离线编译](#离线编译)
 - [光栅器状态](#光栅器状态)
 - [流水线状态对象 Pipeline State Object(PSO)](#流水线状态对象-pipeline-state-objectpso)
+- [问题记录](#问题记录)
+  - [内存对齐问题](#内存对齐问题)
 
 <!-- /TOC -->
 
@@ -159,8 +161,53 @@ FXC
   - InputLayout: 跟顶点结构联系上了
 - ID3D12Device::CreateGraphicPipelineState创建PSO对象
 
+# 问题记录
+## 内存对齐问题
+```
+//结构1：
+struct VertexIn
+{
+  XMFloat4 color;
+  XMFloat3 pos;
+}
+
+//输入布局1：
+m_input_layout =
+{
+  D3D12_INPUT_ELEMENT_DESC{"POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
+  D3D12_INPUT_ELEMENT_DESC{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0}
+};
+
+//结构2：
+struct VertexIn
+{
+  XMFloat3 pos;
+  XMFloat4 color;
+}
+//输入布局2：
+m_input_layout =
+{
+  D3D12_INPUT_ELEMENT_DESC{"POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 16, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
+  D3D12_INPUT_ELEMENT_DESC{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0}
+};
+
+//面对同一顶点数据
+std::array<Vertex, 5> vertexes =
+{
+  Vertex({ XMFLOAT3(-1, -1, -1), XMFLOAT4(Colors::Green)}),
+  Vertex({ XMFLOAT3(-1, -1, 1), XMFLOAT4(Colors::Green)}),
+  Vertex({ XMFLOAT3(1, -1, 1), XMFLOAT4(Colors::Green)}),
+  Vertex({ XMFLOAT3(1, -1, -1), XMFLOAT4(Colors::Green)}),
+  Vertex({ XMFLOAT3(0, 5, 0), XMFLOAT4(Colors::Red)})
+};
+```
+第一种方式读取的最后一个顶点一直为XMFLOAT3(0, 0, 0)。
+
+推测是内存优化\内存对齐导致的。
+
 [RootSignatureMem]: ./GPURootSignature.png
-  
+
+
    
 
 
