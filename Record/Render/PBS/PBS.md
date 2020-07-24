@@ -89,7 +89,7 @@ G(\vec{w_i}, \vec{w_o}) & = & \frac {1} {(\vec{n} \cdot \vec{w_i}) \cdot (1 - K)
 \right.$$
 
 ## 4.4. fresnel方程
-$$F(\vec{h}, w_i) = C_{spec} + (1 - C_{spec})(1 - \vec{h} \cdot \vec{w_i})$$
+$$F(\vec{h}, w_i) = C_{spec} + (1 - C_{spec})(1 - \vec{h} \cdot \vec{w_i})^5$$
 
 ## 4.5. Cook-Torrance BRDF 模型
 镜面反射部分：
