@@ -3,3 +3,6 @@
 - [C6 绘制几何体](./C6_DrawGeometry.md)
 - [C7 绘制几何体(续)](./C7_DrawGeometry.md)
 - [C8 光照模型](./C8_LightMode.md)
+- [C9 纹理](./C9_Texture.md)
+- [C10 混合](./C10_Blend.md)
+- [C11 模板](./C11_Stencil.md)
