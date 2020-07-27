@@ -4,7 +4,8 @@
 - [2. 模板测试](#2-模板测试)
 - [3. 深度/模板状态](#3-深度模板状态)
 - [4. 使用](#4-使用)
-- [细节问题记录](#细节问题记录)
+- [5. 通用阴影矩阵](#5-通用阴影矩阵)
+- [6. 细节问题记录](#6-细节问题记录)
 
 <!-- /TOC -->
 
@@ -31,7 +32,13 @@ D3D12_DEPTH_STENCIL_DESC
 - 填写D3D12_DEPTH_STENCIL_DESC，赋值给D3D12_GRAPHICS_STATE_DESC::DepthStencilState
 - 设置参考值：ID3D12GraphicsCommandList::OMSetStencilRef
 
-# 细节问题记录
+# 5. 通用阴影矩阵
+- $L_w$=0表示平行光，反之为点光源。
+
+# 6. 细节问题记录
 - 镜面反射完了之后，要注意对模型的绕序方向进行设置。
 - 镜面的物体渲染顺序：Opaque->Mirror->Reflection->Transparent。*主要*由depth是否会影响后续的渲染来确定。
 - 模板值的范围由模型在RenderTarget中覆盖的像素决定（实时上并不去改写RenderTarget），单个模板值的大小由接口指定，也就是说单次模板设置的模板值都是一样的
+
+待解决：
+- CreateSampler超过3个容易crush
