@@ -6,3 +6,5 @@
 - [C9 纹理](./C9_Texture.md)
 - [C10 混合](./C10_Blend.md)
 - [C11 模板](./C11_Stencil.md)
+- [C12 几何着色器](./C12_GeometryShader.md)
+- [C13 计算着色器](./C13_ComputeShader.md)
