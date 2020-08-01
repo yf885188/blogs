@@ -8,3 +8,4 @@
 - [C11 模板](./C11_Stencil.md)
 - [C12 几何着色器](./C12_GeometryShader.md)
 - [C13 计算着色器](./C13_ComputeShader.md)
+- [C14 细分着色器](./C14_Tesselation.md)
