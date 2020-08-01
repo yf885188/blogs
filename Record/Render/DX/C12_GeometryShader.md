@@ -6,6 +6,7 @@
 - [4. 纹理子资源](#4-纹理子资源)
 - [5. alpha-to-coverage 技术](#5-alpha-to-coverage-技术)
 - [6. 细节问题记录](#6-细节问题记录)
+- [7. 实践细节](#7-实践细节)
 
 <!-- /TOC -->
 
@@ -50,6 +51,10 @@ Texture2DArray。
 
 # 6. 细节问题记录
 - 每次DrawIndexInstanced/DrawInstanced的时候，vertex_id都会从0开始计算。
+
+# 7. 实践细节
+- 编写和编译GeometryShader
+- 绑定到PSO上
 
 [TextureSubRes]: ./TextureSubRes.bmp
 [TextureSubResIndice]: ./TextureSubResIndices.bmp
