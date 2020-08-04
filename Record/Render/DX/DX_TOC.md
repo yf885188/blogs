@@ -9,3 +9,7 @@
 - [C12 几何着色器](./C12_GeometryShader.md)
 - [C13 计算着色器](./C13_ComputeShader.md)
 - [C14 细分着色器](./C14_Tesselation.md)
+- [C15 动态索引](./C15_DynamicIndexing.md)
+- [C16 实例化与视锥剔除](./C16_DrawingInstance_FrustamCulling.md)
+- [C17 拾取](./C17_Pick.md)
+- [C18 立方体纹理](./C18_CubeTex.md)
