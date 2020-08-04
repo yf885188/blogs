@@ -13,3 +13,4 @@
 - [C16 实例化与视锥剔除](./C16_DrawingInstance_FrustamCulling.md)
 - [C17 拾取](./C17_Pick.md)
 - [C18 立方体纹理](./C18_CubeTex.md)
+- [C19 法线贴图](./C19_NormalMap.md)
