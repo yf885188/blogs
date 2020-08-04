@@ -14,3 +14,4 @@
 - [C17 拾取](./C17_Pick.md)
 - [C18 立方体纹理](./C18_CubeTex.md)
 - [C19 法线贴图](./C19_NormalMap.md)
+- [C20 阴影贴图](./C20_ShadowMap.md)
