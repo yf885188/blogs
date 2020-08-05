@@ -15,3 +15,4 @@
 - [C18 立方体纹理](./C18_CubeTex.md)
 - [C19 法线贴图](./C19_NormalMap.md)
 - [C20 阴影贴图](./C20_ShadowMap.md)
+- [C21 环境遮蔽](./C21_Ambient_Occlusion.md)
