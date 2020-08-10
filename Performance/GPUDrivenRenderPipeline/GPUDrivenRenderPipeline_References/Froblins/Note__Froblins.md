@@ -15,6 +15,12 @@
 - [4. 光照](#4-光照)
   - [4.1. 球谐函数光照纹理](#41-球谐函数光照纹理)
   - [4.2. Double Shadow问题](#42-double-shadow问题)
+- [5. GPU的场景管理](#5-gpu的场景管理)
+  - [5.1. 使用几何着色器做过滤](#51-使用几何着色器做过滤)
+  - [5.2. work flow](#52-work-flow)
+    - [5.2.1. Hi-Z map](#521-hi-z-map)
+    - [5.2.2. 用于LOD选择的GS过滤](#522-用于lod选择的gs过滤)
+  - [5.3. 围绕Queries来组织Draw Calls](#53-围绕queries来组织draw-calls)
 
 <!-- /TOC -->
 
@@ -134,9 +140,58 @@ Bin Update(细节参看原文)
 
 </div>
 
+# 5. GPU的场景管理
+使用GPU做场景管理的原因：
+- 需要可扩展的和稳定的表现
+- 不想要渲染成千上万面的角色
+- 用GPU做模拟的时候，不能在CPU端进行角色管理，因为需要一个read-back。
+
+## 5.1. 使用几何着色器做过滤
+- 基于instance
+- 把instance的顶点作为输入
+- 通过了特殊测试的顶点才能被输出，其他的都被丢弃
+  - 使用DrawAuto做多个测试，或者合并到一个GS中做测试来提高效率。
+
+## 5.2. work flow
+<div align="center">
+
+![][GPUSceneManagementWorkFlow]
+
+</div>
+
+### 5.2.1. Hi-Z map
+- 一个层级深度图
+  - 使用Zbuffer的信息
+- 一个mip-mappe全屏尺寸图片
+- 不需要一个独立的depth pass
+
+关于Hi-Z map会在另一篇做详细的总结。
+- 使用Hi-Z Map做遮挡剔除
+- Hi-Z Map的构建
+- Hi-Z Levels的Reduction Pass
+
+### 5.2.2. 用于LOD选择的GS过滤
+- 使用离散的LOD构建
+- 三个接替执行的filtering pass
+  - 把角色分割到3个离散的集合中
+  - 可以很容易的为每个集合指定LOD参数
+- 在后剔除的操作做了之后在计算LOD的选择
+  - 只执行可见的角色
+  - 剔除的结果仅仅计算一次并且能重复使用
+- 使用细分和Displacement渲染最近的LOD
+- 常规方式渲染中间的LOD
+- 最简单的方式渲染最远的LOD
+
+## 5.3. 围绕Queries来组织Draw Calls
+- 需要知道实体数量来为每个LOD分配draw call
+- 需要一个stream来返回状态query
+  - 如果在查询query的当前帧使用这个query会导致明显的阻塞
+- 在查询query和使用query结果之间重新组织draw calls来填充gap
+
 [Bins]: ./Bins.png
 [BinQuery]: ./BinQuery.png
 [BinUpdate]: ./BinUpdate.png
 [DiffuseLightingWithShadowMap]: ./DiffuseLightingWithShadowMap.png
 [DetectingDirectSunLight]: ./DetectingDirectSunLight.png
+[GPUSceneManagementWorkFlow]: ./GPUSceneManagementWorkFlow.png
 
