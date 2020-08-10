@@ -21,6 +21,10 @@
     - [5.2.1. Hi-Z map](#521-hi-z-map)
     - [5.2.2. 用于LOD选择的GS过滤](#522-用于lod选择的gs过滤)
   - [5.3. 围绕Queries来组织Draw Calls](#53-围绕queries来组织draw-calls)
+- [6. 动画模拟](#6-动画模拟)
+- [7. 细分](#7-细分)
+- [8. PrePass 和 顶点压缩](#8-prepass-和-顶点压缩)
+- [9. 地形绘制](#9-地形绘制)
 
 <!-- /TOC -->
 
@@ -187,6 +191,20 @@ Bin Update(细节参看原文)
 - 需要一个stream来返回状态query
   - 如果在查询query的当前帧使用这个query会导致明显的阻塞
 - 在查询query和使用query结果之间重新组织draw calls来填充gap
+
+# 6. 动画模拟
+这个之前已经实践过了，[参考](https://github.com/529038378/GPU_Instancing_demo)
+
+# 7. 细分
+
+# 8. PrePass 和 顶点压缩
+
+# 9. 地形绘制
+- 顺滑无裂纹无须退化的LOD
+- 细分和实例化
+- 使用DX10.1的特性减少了内存占用
+- 复杂的材质系统
+
 
 [Bins]: ./Bins.png
 [BinQuery]: ./BinQuery.png
