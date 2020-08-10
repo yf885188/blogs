@@ -12,6 +12,9 @@
   - [3.2. 局部导航和避障](#32-局部导航和避障)
     - [3.2.1. 方向影响](#321-方向影响)
       - [3.2.1.1. 空间查询](#3211-空间查询)
+- [4. 光照](#4-光照)
+  - [4.1. 球谐函数光照纹理](#41-球谐函数光照纹理)
+  - [4.2. Double Shadow问题](#42-double-shadow问题)
 
 <!-- /TOC -->
 
@@ -112,8 +115,28 @@ Bin Update(细节参看原文)
 > - 迭代的提前结束
 > - 避免同步导致的阻塞
 
+# 4. 光照
+## 4.1. 球谐函数光照纹理
+
+<div center="align">
+
+![][DiffuseLightingWithShadowMap]
+
+</div>
+
+## 4.2. Double Shadow问题
+现象：在阴影中的实体也释放阴影了。
+解决：阴影地图只用于没有遮挡的地形区域。（原文通过地形的亮度值变化来判断是否被遮挡）
+
+<div center="align">
+
+![][DetectingDirectSunLight]
+
+</div>
+
 [Bins]: ./Bins.png
 [BinQuery]: ./BinQuery.png
 [BinUpdate]: ./BinUpdate.png
-
+[DiffuseLightingWithShadowMap]: ./DiffuseLightingWithShadowMap.png
+[DetectingDirectSunLight]: ./DetectingDirectSunLight.png
 
