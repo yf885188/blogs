@@ -1,0 +1,2 @@
+Deferred Texturing: http://www.reedbeta.com/blog/deferred-texturing/
+The BitSquid low level animation system：http://bitsquid.blogspot.com/2009/11/bitsquid-low-level-animation-system.html
