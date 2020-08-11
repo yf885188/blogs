@@ -6,6 +6,7 @@
   - [2.2. 实现原理](#22-实现原理)
   - [2.3. work flow](#23-work-flow)
 - [3. Merge-Instancing](#3-merge-instancing)
+- [4. Phone-wire AA](#4-phone-wire-aa)
 
 <!-- /TOC -->
 [原文](./Persson_GraphicsGemsForGames.pptx)
@@ -76,6 +77,13 @@ work flow :
 
 > - instance data要配合freq
 > - 必要时要添加辅助三角形
+
+# 4. Phone-wire AA
+虽然MSAA和MipMapping能解决大部分的AA问题，但是随着资源的精度上升、光照效果更真实等画质的提升，导致AA出现了更多需要解决的问题。这里介绍电话线一类物体的渲染AA解决方案。
+
+原理：
+当线的宽度要小于一个像素的时候，强制clamp宽度到1，并设置alpha进行混合。
+
 
 [ParticleTrimmingResults]: ./ParticleTrimmingResults.jpg
 [MergeInstancingProblems]: ./MergeInstancingProblems.jpg
