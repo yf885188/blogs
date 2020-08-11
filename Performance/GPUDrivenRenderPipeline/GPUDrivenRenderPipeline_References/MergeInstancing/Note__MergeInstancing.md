@@ -7,6 +7,8 @@
   - [2.3. work flow](#23-work-flow)
 - [3. Merge-Instancing](#3-merge-instancing)
 - [4. Phone-wire AA](#4-phone-wire-aa)
+- [5. Second-Depth AA](#5-second-depth-aa)
+  - [5.1. work flow](#51-work-flow)
 
 <!-- /TOC -->
 [原文](./Persson_GraphicsGemsForGames.pptx)
@@ -82,10 +84,42 @@ work flow :
 虽然MSAA和MipMapping能解决大部分的AA问题，但是随着资源的精度上升、光照效果更真实等画质的提升，导致AA出现了更多需要解决的问题。这里介绍电话线一类物体的渲染AA解决方案。
 
 原理：
-当线的宽度要小于一个像素的时候，强制clamp宽度到1，并设置alpha进行混合。
+- 用中心点、半径和法线表示的圆柱来表现电线
+- 当线的宽度要小于一个像素的时候，强制clamp宽度到1，并设置alpha进行混合。
 
+# 5. Second-Depth AA
+AA 的分类：
+- Post-AA: 跟管线的其他部分解耦，直接对最后的buffer进行处理
+  - MLAA
+  - SMAA
+  - FXAA
+  - DLAA
+- Analytical AA:根据输入的数据对边缘进行检测，然后进行AA
+  - GPAA
+  - GBAA
+  - DEAA
+  - SDAA
+
+## 5.1. work flow
+
+<div align="center">
+
+![][SDAAWorkFlow0]
+
+![][SDAAWorkFlow1]
+
+</div>
+
+需要：
+- Depth-Buffer 和 Second-Depth Buffer
+- Dpeth在屏幕空间要是线性的
+- Second-Depth Buffer的生成：
+  - pre-z pass + front-face culling
+  - 或者，其他为背面几何体进行深度渲染的方式
 
 [ParticleTrimmingResults]: ./ParticleTrimmingResults.jpg
 [MergeInstancingProblems]: ./MergeInstancingProblems.jpg
 [MergeInstancingWorkFlow0]: ./MergeInstancingWorkFlow0.jpg
 [MergeInstancingWorkFlow1]: ./MergeInstancingWorkFlow1.jpg
+[SDAAWorkFlow0]: ./SDAAWorkFlow0.jpg
+[SDAAWorkFlow1]: ./SDAAWorkFlow1.jpg
