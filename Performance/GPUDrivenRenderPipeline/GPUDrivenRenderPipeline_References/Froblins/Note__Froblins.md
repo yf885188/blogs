@@ -28,7 +28,7 @@
 
 <!-- /TOC -->
 
-[原文](./../References/Oat-Tatarchuk-Froblins(Siggraph2008).pdf)
+[原文](./Oat-Tatarchuk-Froblins(Siggraph2008).pdf)
 
 # 1. 论文目的
 在GPU上模拟和渲染大量角色。
