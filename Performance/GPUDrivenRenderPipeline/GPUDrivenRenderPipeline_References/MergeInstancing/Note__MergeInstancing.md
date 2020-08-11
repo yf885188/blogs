@@ -5,6 +5,7 @@
   - [2.1. ROP](#21-rop)
   - [2.2. 实现原理](#22-实现原理)
   - [2.3. work flow](#23-work-flow)
+- [3. Merge-Instancing](#3-merge-instancing)
 
 <!-- /TOC -->
 [原文](./Persson_GraphicsGemsForGames.pptx)
@@ -55,6 +56,28 @@ ROP的常用场景：
 - 暴力遍历所有的边排列组合
   - 选择最小的区域几何图形
 
+# 3. Merge-Instancing
+现状：
+<div align="center">
 
+![][MergeInstancingProblems]
+
+</div>
+
+work flow :
+
+<div align="center">
+
+![][MergeInstancingWorkFlow0]
+
+![][MergeInstancingWorkFlow1]
+
+</div>
+
+> - instance data要配合freq
+> - 必要时要添加辅助三角形
 
 [ParticleTrimmingResults]: ./ParticleTrimmingResults.jpg
+[MergeInstancingProblems]: ./MergeInstancingProblems.jpg
+[MergeInstancingWorkFlow0]: ./MergeInstancingWorkFlow0.jpg
+[MergeInstancingWorkFlow1]: ./MergeInstancingWorkFlow1.jpg
