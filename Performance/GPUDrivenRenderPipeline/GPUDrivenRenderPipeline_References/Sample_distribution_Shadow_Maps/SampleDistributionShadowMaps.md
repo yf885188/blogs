@@ -26,13 +26,21 @@
 具体参看原文
 
 # 3. 原理
+
+还可以参考[blog](./http://www.klayge.org/2013/05/07/%E5%A4%A7%E8%8C%83%E5%9B%B4shadow-map%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9Asdsm/)
+
 两个pass：
 - 计算场景中需要采样的深度范围分布
 - 使用深度分区和采样分布计算在灯光空间能紧紧包裹采样区域的分区视锥
 
 ## 3.1. 深度分区
 原则：尽量让分区有最小的far-to-near比率，这样从整个视锥角度上来看，分辨率的影响就会变小。
-算法： the basic logarithmic partitioning，[min/max reduction算法]（https://docs.microsoft.com/zh-cn/windows/win32/direct3d11/tiled-resources-texture-sampling-features?redirectedfrom=MSDN#minmax-reduction-filtering）
+算法： the basic logarithmic partitioning，[min/max reduction过滤]（https://docs.microsoft.com/zh-cn/windows/win32/direct3d11/tiled-resources-texture-sampling-features?redirectedfrom=MSDN#minmax-reduction-filtering）
+
+work flow:
+- 渲染一遍场景，得到depth texture
+- 根据depth texture,获取最大最小depth
+- 根据depth的范围根据log的距离分布平行切成几个区域
 
 <div align="center">
 
