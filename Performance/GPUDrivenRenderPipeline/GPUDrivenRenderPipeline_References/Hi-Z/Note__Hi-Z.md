@@ -129,4 +129,6 @@ Hi-Z 算法结合了上面两种算法的优点：
 - 可以并行分块生成Z pyramid
 
 # 待解决的问题
-这个时间相干性表具体是怎么生成的？怎么记录当前的cube在GPU端是被剔除还是更新到了最前？也就说怎么read back这个数据？实时渲染的话，每帧read back不现实，这里也没提是否有提前渲染缓冲的机制。还是说整个就是个软渲染？软渲染的话，性能应该也不会有这么高。
+Q：这个时间相干性表具体是怎么生成的？怎么记录当前的cube在GPU端是被剔除还是更新到了最前？也就说怎么read back这个数据？实时渲染的话，每帧read back不现实，这里也没提是否有提前渲染缓冲的机制。还是说整个就是个软渲染？软渲染的话，性能应该也不会有这么高。
+
+A:在[细胞分裂](../Practical,DynamicVisibilityForGames/Note_Practical,DynamicVisibilityForGames.md)的处理中，确实有个read-back，可以参考其具体操作。
