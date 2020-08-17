@@ -2,6 +2,7 @@
 
 - [1. 准备](#1-准备)
 - [2. 目标](#2-目标)
+- [开发日志](#开发日志)
 
 <!-- /TOC -->
 
@@ -21,3 +22,6 @@
 - 多线程/多引擎框架
 - Virtual Texture
 - Shadow Caster Culling
+  
+# 开发日志
+- [延迟渲染](./DevLog/1-DeferredTexturing.md)
