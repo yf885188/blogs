@@ -49,6 +49,12 @@
 > - 不能AA
 > - 输出写遮罩需要视不同的硬件决定
 
+
+
+## 填充G-Buffer的pass
+- 使用MRT技术，两个RT使用不同的Format。
+- 打开Stencil为后面的shading使用
+
 具体实现：
 - G-Buffer包含2个RT
 - 2个RT：2个资源对应2个Tex View和两个RenderTargetView
@@ -56,9 +62,14 @@
 - OMSetRenderTarget设置RenderTarget的数量和目标
 - 调试可以把RenderTarget给复制到BackBuffer中进行调试
 
-## 填充G-Buffer的pass
+## 进行Shading的pass
+### code和decode
+- normal:需要考虑2个通道表示3通道之后的Z方向问题、边界问题等，可以参考[网址](https://www.xuebuyuan.com/439585.html)
+- tangent:
+- uv:
+- depth:用来在PS中反算世界坐标
 
-## 进行pixel shader的pass
+这里的精度都是把float3 float2压缩到16X2的uint定点数中，针对float的24位精度，会存在精度损失。
 
 ## 延迟渲染的优化
 主要就是要减少带宽，把消耗高的计算推迟到后面。
