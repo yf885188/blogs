@@ -1,6 +1,3 @@
-# 目标
-- GPU 驱动的渲染管线
-
 # 思路
 ## 资源的重新组织
 参考[官方文档](https://docs.microsoft.com/zh-cn/windows/win32/direct3d12/memory-management)
