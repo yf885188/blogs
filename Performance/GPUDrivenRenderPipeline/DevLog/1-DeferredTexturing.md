@@ -36,8 +36,8 @@
 |index | float0 | float1| float2| float3|
 |:---:|:---:|:---:|:---:|:---:|
 |RT0 | |Depth  ||Stencil |
-|RT1|Normal 2x16 定点数|UV 2X16 定点数| Mat ID |
-
+|RT1|Normal 2x16 定点数|Normal 2x16 定点数|UV 2X16 定点数| Depth |
+|RT2|Mat ID||||
 ## MRT
 用来是想G-Buffer的填充。[官方文档](https://docs.microsoft.com/en-us/windows/win32/direct3d9/multiple-render-targets)。
 
