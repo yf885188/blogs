@@ -19,3 +19,6 @@
 > 也即是说，使用ring buffer进行阻塞的条件有两种：
 > - ring buffer资源不够
 > - cmd allocator的资源不够
+
+# 表现
+使用ring buffer替代原有的多UploadBuffer的FrameResource之后，帧率有20~30左右的提升。
