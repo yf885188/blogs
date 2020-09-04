@@ -35,7 +35,7 @@
 
 ## 3.1. 深度分区
 原则：尽量让分区有最小的far-to-near比率，这样从整个视锥角度上来看，分辨率的影响就会变小。
-算法： the basic logarithmic partitioning，[min/max reduction过滤]（https://docs.microsoft.com/zh-cn/windows/win32/direct3d11/tiled-resources-texture-sampling-features?redirectedfrom=MSDN#minmax-reduction-filtering）
+算法： the basic logarithmic partitioning，[min/max reduction过滤](https://docs.microsoft.com/zh-cn/windows/win32/direct3d11/tiled-resources-texture-sampling-features?redirectedfrom=MSDN#minmax-reduction-filtering)
 
 work flow:
 - 渲染一遍场景，得到depth texture
