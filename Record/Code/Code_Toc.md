@@ -1,2 +1,2 @@
-- [CLR_Via_C#](./CLR_Via_C#.md)
-- [C++](./C++.md)
+- [/CLR_Via_C#](./C#/CLR_Via_C#.md)
+- [/C++](./C++/C++.md)

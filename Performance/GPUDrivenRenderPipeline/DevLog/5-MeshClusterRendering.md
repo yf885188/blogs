@@ -24,4 +24,7 @@
 
 
 # 实践
-很多结果都是在GPU上产生的，如果使用传统方式，会产生从GPU到CPU的回传，这里使用，ExecuteIndirect的方式进行处理。具体可以参看官方的例子D3D12ExecuteIndirect。
+- 很多结果都是在GPU上产生的，如果使用传统方式，会产生从GPU到CPU的回传，这里使用，ExecuteIndirect的方式进行处理。具体可以参看官方的例子D3D12ExecuteIndirect。
+- 复用FrameResource中的资源遇到一些问题： 
+  - 因为是使用的ring buffer，所以不能像其他的资源那样直接在**初始化阶段**就指定好Object buffer的位置，动态创建描述符的性能消耗这里存疑，暂时没看出有啥问题
+  - ring buffer中的对齐是按照8bits也即1B来对齐的，但是在创建视图的时候因为没有单独创建新的资源，绑定到FrameResource的时候采用偏移的方式定位，但是这种既有方式是根据视图对应的数据结构为偏移的最小元素，所以在ring buffer对各buffer加入了按照各自数据结构大小的偏移计算。
