@@ -21,6 +21,7 @@
 ### instance culling
 具体思路：
 - 在Object Buffer中加入包围盒信息。
+- Instance Culling 完毕之后单个实体的顶点数差异可能会很大，可以先粗分为几个chunk，chunk里包含多个cluster。
 
 
 # 实践

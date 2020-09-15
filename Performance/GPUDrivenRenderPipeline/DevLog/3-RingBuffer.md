@@ -11,11 +11,9 @@
   - ObjectBuffer: constant buffer
   - PassBuffer: constant buffer
 
-现在把FrameResource中的ObjectBuffer和PassBuffer合并成一个buffer进行处理。并放到ring buffer中进行处理。
+现在把以上buffer都合并成一个buffer进行处理。并放到ring buffer中进行处理。
 
 > 这里的处理在[后续](./5-MeshClusterRendering.md)中又有变化。
-
-因为在DS的第二个pass中需要访问所有的材质，在Shade中使用的是动态索引，如果把Mat Buffer合并的话，容易出现Mat Buffer在ring buffer中地址不是连续的情况，所以这里不将Mat Buffer合并。
 
 > 多帧的资源公用一个ring buffer，不像之前定死是N个帧资源，根据每帧的实体数量都会有不同的变化。但是ID3D12CommandAllocator还是要多配置几个用于缓冲。为了达到这种效果，又能保证ID3D12CommandAllocator可以重复使用，需要在帧资源比ID3D12CommandAllocator的资源多的时候对CPU进行阻塞。
 > 也即是说，使用ring buffer进行阻塞的条件有两种：
