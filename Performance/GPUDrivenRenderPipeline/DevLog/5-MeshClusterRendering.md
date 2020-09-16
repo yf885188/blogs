@@ -21,8 +21,18 @@
 ### instance culling
 具体思路：
 - 在Object Buffer中加入包围盒信息。
-- Instance Culling 完毕之后单个实体的顶点数差异可能会很大，可以先粗分为几个chunk，chunk里包含多个cluster。
+- 把包围盒投影到ndc空间
+- 根据ndc空间的包围盒大小，选较长边确定Hi-Z的层级，保证至少能覆盖两个纹素
+- 根据ndc空间包围盒4点采样的Hi-Z上的深度，跟最近深度（这里简单处理，取8个顶点中的最近深度）进行比较。
+  - 如果4个采样深度中，存在一个采样深度大于最近深度，则intance不被剔除
+  - 反之，则被剔除
 
+### chunk expan
+- Instance Culling 完毕之后单个实体的顶点数差异可能会很大，可以先粗分为几个chunk，chunk里包含多个cluster。
+- cluster Bounds的填充处理也放在这个pass中进行。
+  - 对于面片数不是cluster面片数（这里是64）倍数的instance数据需要填充顶点
+  - 因为后续的vertex/index buffer都是所有的instance公用，instance的index需要重新计算在合并后的index buffer中的index数据。放在CPU端处理的话，需要遍历。因为DrawArgument中也记录了VertexStartLocation,相当于记载了instance前的总顶点偏移量，因此可以使用index + VertexStartLocation的方式更新得到新的index。
+- 使用ExecuteIndirect的时候不会记录Index数量，但是通过面片填充之后，最后绘制的是cluster，面片数量固定（这里是64）。
 
 # 实践
 - 很多结果都是在GPU上产生的，如果使用传统方式，会产生从GPU到CPU的回传，这里使用，ExecuteIndirect的方式进行处理。具体可以参看官方的例子D3D12ExecuteIndirect。
