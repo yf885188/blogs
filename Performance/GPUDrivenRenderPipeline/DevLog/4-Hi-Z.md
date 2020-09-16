@@ -23,7 +23,7 @@ DX12不再有现成的GenerateMips函数，可以参考官方MiniEngine和[blog]
 > 注意：
 > - 遇到一个小坑，SV_Position在PS中的Z分量被设定为了1。需要单独存一份裁剪空间坐标用于后续的深度计算。
 > - 之前看论文有一种max/min reduction的采样方式，可以直接采样区域的Max值，但是要跟tile resource配合使用，这里down sample Hi-Z还是用loop的方式取4点进行比较。
-> - 因为要绘制的是Occluder的深度，因此不先绘制sky box，清空buffer的时候用0，而不是类似DepthStencilView用1填充表示最远距离。
+> - ~~因为要绘制的是Occluder的深度，因此不先绘制sky box，清空buffer的时候用0，而不是类似DepthStencilView用1填充表示最远距离。~~清空的时候用1。
 
 ## Hi-Z 遮挡查询
 标准操作是通过屏幕空间包围盒+包围盒对应的Hi-Z层级采样深度进行判断，但是这里的解决方案顶点数据是GPU Driven的，具体实现放到后面的功能中一起处理。
