@@ -42,6 +42,16 @@
 - 复用FrameResource中的资源遇到一些问题： 
   - 因为是使用的ring buffer，所以不能像其他的资源那样直接在**初始化阶段**就指定好Object buffer的位置，动态创建描述符的性能消耗这里存疑，暂时没看出有啥问题
   - ring buffer中的对齐是按照8bits也即1B来对齐的，但是在创建视图的时候因为没有单独创建新的资源，绑定到FrameResource的时候采用偏移的方式定位，但是这种既有方式是根据视图对应的数据结构为偏移的最小元素，所以在ring buffer对各buffer加入了按照各自数据结构大小的偏移计算。
+- 要仔细检查CPU跟GPU端结构的对齐情况，不然容易出现数据传输错误。tips：可以在RenderDoc中看Buffer的格式，来进行对应的修改。
+
+<div align="center">
+
+![][RenderDocStrutureDebug]
+
+</div>
+
+
+[RenderDocStrutureDebug]: ./RenderDocStrutureDebug.jpg
 
 # 待解决问题
 - 坑：UINT64在copy到GPU之后包含他的机构体大小失效，也即通过偏移取的数都不对。但是IndirectExecute的例子没有问题，通过对齐地址和补齐到64的倍数大小都无济于事。
