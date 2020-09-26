@@ -57,10 +57,16 @@
 cluster渲染表现
 <div>
 
-![][ClusterCullingRes]
+![][ClusterCullingRes0]
+
+![][ClusterCullingRes1]
 
 </div>
 
+最后总结的结果比原来什么都不做的处理帧率要提高50%~100%。
+但还是存在一些实体pop的现象。需要后续接着改进。
+
 [RenderDocStrutureDebug]: ./RenderDocStrutureDebug.jpg
-[ClusterCullingRes]: ./ClusterCullingRes.jpg
+[ClusterCullingRes0]: ./ClusterCullingRes0.jpg
+[ClusterCullingRes1]: ./ClusterCullingRes1.jpg
 # 待解决问题
