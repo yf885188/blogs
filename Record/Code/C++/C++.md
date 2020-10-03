@@ -157,7 +157,7 @@ static_cast、dynamic_cast、const_cast和reinterpret_cast。
 - dynamic_cast<type&>(e) : e必须是左值
 - dynamic_cast<type&&>(e) : e不能是左值
 
-e必须满足以下三种条件之一：
+必须满足以下三种条件之一：
 - type的公有派生类
 - type的公有基类
 - type类
