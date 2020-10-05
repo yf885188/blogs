@@ -1,3 +1,18 @@
+<!-- TOC -->
+
+- [参考](#参考)
+- [内存分配的4个层次](#内存分配的4个层次)
+- [new 和 delete](#new-和-delete)
+  - [new](#new)
+  - [delete](#delete)
+- [Array new](#array-new)
+- [Placement New](#placement-new)
+  - [work flow](#work-flow)
+- [G2.9 std::alloc的运行模式](#g29-stdalloc的运行模式)
+- [malloc/free](#mallocfree)
+
+<!-- /TOC -->
+
 # 参考
 [链接](https://www.bilibili.com/video/BV1Kb411B7N8?p=1)
 
@@ -56,7 +71,7 @@
 
 [PlacementNewWorkFlow]: ./PlacementNewWorkFlow.jpg
 
-## G2.9 std::alloc的运行模式
+# G2.9 std::alloc的运行模式
 去掉单次内存分配时cookie等带来的内存消耗。
 
 work flow:
@@ -76,3 +91,15 @@ work flow:
 - 如果所有内存都被分配到了各自大小的内存链表中，这时再分配内存就会导致内存不足，此时会从右边最靠近的内存链表中获取相关的内存作为备用内存池，然后分配给当前的内存链表。如果右边没有则会导致分配失败。
 
 [AllocWorkFlow]: ./AllocWorkFlow.jpg
+
+# malloc/free
+
+VC6 CRT Start Up Flow:
+
+<div align="center">
+
+![][CRTStartUp]
+
+</div>
+
+[CRTStartUp]: ./CRTStartUp.jpg
