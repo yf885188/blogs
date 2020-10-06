@@ -10,6 +10,7 @@
   - [work flow](#work-flow)
 - [G2.9 std::alloc的运行模式](#g29-stdalloc的运行模式)
 - [malloc/free](#mallocfree)
+- [bitmap_allocator](#bitmap_allocator)
 
 <!-- /TOC -->
 
@@ -64,10 +65,14 @@
 
 </div>
 
+- placement delete 只有在对应的placement new 发生异常的时候才会被调用。
+
 ## work flow
 - 定位内存
 - static_cast 转变内存类型
 - 调用构造
+
+
 
 [PlacementNewWorkFlow]: ./PlacementNewWorkFlow.jpg
 
@@ -102,4 +107,27 @@ VC6 CRT Start Up Flow:
 
 </div>
 
+- 上下cookie可以用于合并时的条件检测
+- 根据Group中记录的count来判断当前链表是否是空，是否能全回收
+- 只有在有两个以上的Group需要全回收的时候才进行全回收，也即defering——延迟机制
+  - 有一个Group要回收，记为defer
+  - 等第二个Group要回收，把defer Group回收，然后把第二个触发全回收的Group记为defer
+
 [CRTStartUp]: ./CRTStartUp.jpg
+
+
+# bitmap_allocator
+
+<div align="center">
+
+![][BitmapAllocatorStructure]
+
+</div>
+
+- super-blocks = blocks + bitmap。
+- 若没有全回收，则分配时N+1级的super-block的size大小是N级的super-block的size大小的2倍。类似容器的容积2倍的增长。反之，分配时的size会减半。
+- 同一super-block内只会分配同一类型的block，即使block size相同也是如此。
+- 全回收的super-block会被放到一个free list，并按照super block的大小进行排列。如果这个free list的大小达到64的上限，新回收的super-block如果大于free list尾部最大的super block size会被直接delete，反之替代掉尾部的super block。
+- 如果所有的super block都进到free list中，此时又触发了block的分配，就直接从free list中选取一个super block回来接着使用。
+
+[BitmapAllocatorStructure]: ./BitmapAllocatorStructure.jpg
