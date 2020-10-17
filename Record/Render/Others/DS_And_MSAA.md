@@ -1,5 +1,5 @@
 
-[参考](./https://www.zhihu.com/search?type=content&q=%E5%BB%B6%E8%BF%9F%E6%B8%B2%E6%9F%93%20msaa)
+[参考](https://zhuanlan.zhihu.com/p/135444145)
 
 # 前项渲染中的MSAA流程
 work flow
