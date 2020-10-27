@@ -2,3 +2,12 @@
 - [PBS 基于物理的渲染](./PBS/PBS.md)
 - [SRP 材质解析](./SRP%20Material/SRP_Material.md)
 - [DX 龙书学习](./DX/DX_TOC.md)
+- [SDFGI](./GI/Note__SDFGI.md)
+- [其他]
+  - [面积光](./Others/Area_Light(NotCompeleted).md)
+  - [延迟渲染与MSAA](./Others/DS_And_MSAA.md)
+  - [IBL](./Others/IBL(NotCompeleted).md)
+  - [SSR](./Others/SSR.md)
+  - [透明渲染](./Others/Transparent_Rendering.md)
+  - [early-z](./Others/Early_Z.md)
+  - [万向锁问题](./Others/Gimbal_Lock.md)
