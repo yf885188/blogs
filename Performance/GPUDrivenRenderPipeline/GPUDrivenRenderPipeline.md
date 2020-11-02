@@ -25,7 +25,7 @@
   
 # 开发日志
 - [延迟渲染](./DevLog/1-DeferredTexturing.md)
-- [场景树剔除](./devlog/2-SceneTreeCulling.md)
-- [RingBuffer替代帧资源](./devlog/3-RingBuffer.md)
-- [Hi-Z](./devlog/4-Hi-Z.md)
-- [ClusterRendering](./devlog/5-MeshClusterRendering.md)
+- [场景树剔除](./DevLog/2-SceneTreeCulling.md)
+- [RingBuffer替代帧资源](./DevLog/3-RingBuffer.md)
+- [Hi-Z](./DevLog/4-Hi-Z.md)
+- [ClusterRendering](./DevLog/5-MeshClusterRendering.md)
