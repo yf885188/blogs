@@ -22,6 +22,10 @@
 - 载入模块所有函数：
   - import module ,使用 module.function的方式来调用
   - from module import * , 可能会因为function的名字相同而导致覆盖
+- 文件路径
+  - Linux和OS X中使用'/'
+  - Windows中使用'\'
+
 
 # 类
 - 类名默认首字母大写
@@ -33,3 +37,15 @@
   - 父类(超类)关键字：super()
   - python 2.7 与 python 3 的super语法也不一样。在python2.7中，使用super(child, parent)的方式
   - 重写： 类同与覆盖
+- 编码风格
+  - 类型应该使用驼峰命名法：单词首字母大写，不使用下划线。实例名和模块名都使用小写格式，单词之间加上下划线。
+  - 文档字符串
+  - 在类中，一个空行分隔方法。在模块中，两个空行分隔类。标准库的import和自定义的import间隔一个空行
+
+# 异常
+使用 try-except-else 机制
+- 如果想在except之后继续后面的流程，可以使用pass关键字
+
+# 使用jason进行持久化存储
+json.dump() 和 json.load()
+- 使用前要import json
