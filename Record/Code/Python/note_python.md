@@ -49,3 +49,14 @@
 # 使用jason进行持久化存储
 json.dump() 和 json.load()
 - 使用前要import json
+
+# 单元测试
+- 导入unittest
+- 继承unittest.TestCase来做用例
+- 用例类中所有test_开头的方法都会自动运行
+- unittest.main()用来跑当前模块的测试用例，也就是测试用例类中test_开头的方法
+- setup可以统一设置测试的预期值和调查对象
+- 每完成一个单元测试：
+  - 通过：打印一个'.'
+  - 错误：打印E
+  - 失败：打印F
