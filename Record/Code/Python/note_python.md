@@ -29,3 +29,7 @@
   - 默认生成并在实例化的时候自动调用
   - 第一个参数默认为self
 - 不用显示定义属性
+- 继承
+  - 父类(超类)关键字：super()
+  - python 2.7 与 python 3 的super语法也不一样。在python2.7中，使用super(child, parent)的方式
+  - 重写： 类同与覆盖
