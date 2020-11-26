@@ -1,0 +1,3 @@
+# Default Constructor的建构操作
+- class object 的class member会在default constructor中被默认调用，但是如果定义了user-defined constructor则不会
+- member objects的初始化会根据在class中的声明次序来调用各个constructors
