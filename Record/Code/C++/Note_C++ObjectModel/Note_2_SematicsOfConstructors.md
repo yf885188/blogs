@@ -77,3 +77,14 @@ void bar(X& _res_)
 - 存在大量的返回值的情况，有NRV优化
 - 注意是有隐式的member产生比如vtpr等等
 
+# 成员初始化
+- 使用成员初始化列表会直接使用构造函数，而省去一个中间临时变量的操作过程。
+- 初始化列表的方式会在任何的显式code之前进行
+- 初始化列表的实际初始化顺序只跟member的声明顺序有关，跟初始化列表中的位置无关
+- base class的构造比成员初始化列表的构造还要早
+## 必须使用成员初始化列表的4种情况
+- 初始化一个refrence member
+- 初始化一个const member
+- 调用base class的constructor，且他需要一组参数
+- 调用member class的constructor,且他需要一组参数
+
