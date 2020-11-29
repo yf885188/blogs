@@ -58,3 +58,47 @@ Thunk 技术:就是一小段assembly码，主要作用：1.以适当的offset调
 
 ## 虚拟继承下的virtual functions
 太复杂，给出建议：不要在virtual base class中带入data member。
+
+# 指向Member Function的指针
+## 支持“指向Virtual Member Functions”之指针
+虚拟机制在当前仍然可以运行。
+
+- &Class::NonvirtualFunc获得一般都是内存地址。
+- &Class::VirtualFunc获得的地址一般都是在vptr中的索引值。
+
+> 在编译器中，为了区分到底只NonvirtualFunc还是VirtualFunc，有使用如下的方法
+> ```
+> (((int)pmf)&~127)
+> ?
+> (*pmf)(ptr)                   //Nonvirtual Func
+> :
+> (*ptr->vptr[(int)pmf](ptr));  //Virtual Func
+> ```
+> 这种方式也间接设置了VirtualFunc数量的上限。
+
+## 指向多重继承类中的Member Functions的指针
+引入了一个新的结构体
+```
+struct __mptr 
+{
+    int delta;              //this指针的offset值
+    int index;              //带有virtual table索引，不指向virtual table时设为-1
+    union
+    {
+        ptrtofunc faddr;    //nonvirtual member function地址
+        int v_offset;       //一般放的是virtual base class的vptr或者多重继承中的后续base class的vptr位置
+    }
+}
+```
+
+然后member func的调用会变成如下方式：
+```
+(pmf.index < 0)
+?
+(*pmf.faddr)(ptr)
+:
+(*ptr->vptr[pmf.index](ptr))
+```
+但是这种方式，提高了调用member function的所有成本。如果传递一个不变值的指针给member function时，会产生一个临时性对象，也抬高了成本。
+
+
