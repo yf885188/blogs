@@ -45,3 +45,10 @@ class::class()
 - 返回指定内存的指针
 - 在指定内存上调用constructor
 - 最好用新的内存或者同类型object的内存，内存大小最好一致，不然会造成错误。比如用derived class来placement new一个base class的内存就会有问题，因为new 之后会调用constructor。
+
+# 临时变量
+- 凡含有表达式执行结果的临时性对象，应该留存到object的初始化操作完成为止
+> ```
+> string a = !bool ? 0 : b + c // ? : 运算符产生的临时变量应该要在a初始化完成之后销毁
+> ```
+- 如果一个临时性对象被绑定于一个reference,对象将残留，知道被初始化のreference的生命结束，火直到临时对象的生命范畴结束——视哪一种情况先到达而定。
