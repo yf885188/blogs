@@ -1,0 +1,45 @@
+# 扩充特性
+- template
+- exception handling(EH)
+- runtime type indetification(RTTI)
+
+# template
+主要讨论方向：
+- template的声明
+- 如何具现出(instantiates) class object以及inline nonmember，以及member template functions
+- 如何具现出 nonmember 、member template functions和static template class members
+
+# 具现行为（Template Instantiation）
+具现行为：根据template类型，产生出具体的函数/类实体。
+- template<class> *ptr的方式不会产生具现行为。但是引用的方式会产生具现行为。
+- template class中没有使用到的member function不会被具现，只有使用到时才会被具现。
+  - 效率考量
+  - 针对尚未实现的技能有更高的鲁棒性。
+
+具现的时机，两种策略：
+- 在编译的时候
+- 在链接的时候
+
+## Template的错误报告
+- 所有与类型有关的检验，如果涉及到template参数，都必须延迟到真正的具现操作发生，才得为止
+- nonmember 和 member template在具现发生之前也没有做完全的类型检验
+
+## Template的名称决议方式
+template体现的2个作用范围：
+- scope of the template definition：定义域
+- scope of the template instantiation：具现域
+决议细节：
+- template之中，对于一个nonmember name的决议结果是根据这个name的使用是否与具现出template的具体参数类型有关来判断的：无关则使用定义域来决定name，相关则使用具现域来决定name。
+- 决议只跟函数签名有关（signature），与返回值类型无关。
+
+## 具现行为
+三个主要问题
+- 编译器如何找出函数的定义：包含template program text file，类似头文件；或者根据命名规则来保证
+- 编译器如何能够只具现出程序中用到的member function
+  - 简单粗暴，直接把已经具现出来的class的所有member functions都具现出来
+  - 仿真链接操作，把函数真正需要的函数给生产出来
+- 阻止member definition在多个目标文件中具现出来
+  - 产生多个实体，链接的时候只保留一个
+  - 在链接的时候生成，并通过策略确定哪个实体是真正的需求并保留
+
+> 比较了auto template的几种方案之后得出的结论：还是手动具现化靠谱。
