@@ -43,3 +43,27 @@ template体现的2个作用范围：
   - 在链接的时候生成，并通过策略确定哪个实体是真正的需求并保留
 
 > 比较了auto template的几种方案之后得出的结论：还是手动具现化靠谱。
+
+# 异常处理(Exception Handling)
+编译器为支持异常设置的机制：
+- 找出catch子句，用于处理被丢出来的exception。
+- 查询exception objects的方法，知道其实际类型
+- 管理被丢出的exception ojbect，包括他们的生产、存储、可能的解构、清理和一般的存取。
+
+## C++ EH的语汇组件构成
+- throw子句
+- 一个或者多个catch子句
+- 一个try子句
+
+这样的机制在一定程度上改变了程序的运行语意、资源管理
+
+## EH的流程
+- 检验发生throw的函数：一个exception被丢出的时候，exception object会被产生出来并放在相同形式的exception数据堆栈中。
+- 决定throw操作是否发生在try区段：program counter对函数进行区分，以决定thore是否发生在try区段
+  - 若是，编译器必须把exception拿来和每一个catch子句比较：每一个函数会产生一个exception表格用检测exception object与catch子句的对应关系
+    - 如果比较吻合，流程控制应该交到catch子句中
+  - 如果throw的发生并不在try区段中，或没有一个catch子句吻合，那么系统必须
+    - 摧毁掉所有的active local objects
+    - 从堆栈中将当前的函数unwind掉
+    - 进行到程序堆栈中的下个函数中去，然后重复上面的检查决定throw操作是否发生在try区段的操作
+
