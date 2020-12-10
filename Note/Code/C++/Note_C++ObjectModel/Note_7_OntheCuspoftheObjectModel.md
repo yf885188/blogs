@@ -67,3 +67,26 @@ template体现的2个作用范围：
     - 从堆栈中将当前的函数unwind掉
     - 进行到程序堆栈中的下个函数中去，然后重复上面的检查决定throw操作是否发生在try区段的操作
 
+# RTTI
+## Type-Safe Downcast
+为实现这套机制增加了额外的开销：
+- 用来存储类型信息的额外空间
+- 需要额外时间来决定执行期的类型
+
+> 可以通过在vtbl中添加class object的指针来记录类型信息。
+
+## Type-Safe Dynamic Cast
+判断以下一个转型操作是static还是dynamic，必须视指针是否指向一个多态class object而定。
+```
+pfct pf = pfct(pt);
+```
+> 相对于static cast，dynamic cast能保证运行期的安全性，会做安全检查。
+
+### reference不是pointer
+- 转换失败的时候，reference不能像pointer那样返回0表示失败，只能throw bad_cast exception
+
+### TypeId运算符
+使用TypeId进行类型判断，能绕过reference必须返回0或者throw bad_cast exception的问题。
+
+## Type Info结构
+- 内建类型也有Type Info结构，不过不是在运行期生成的，在程序执行前就已经静态生成好了。
