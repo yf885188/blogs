@@ -12,7 +12,7 @@
 
 </div>
 
-[STL_Components]: ./STL_Components.jpg
+[STL_Components]: ./STLComponents.jpg
 
 # 文件分类
 - C++标准规范下的C头文件
