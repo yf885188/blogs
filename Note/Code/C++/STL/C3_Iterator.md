@@ -8,6 +8,8 @@ STL的中心思想：将数据容器和算法分开，彼此独立设计，最�
 # 迭代器的本质是smart pointer
 每种STL容器都有一个专属的迭代器。
 
+> 因此需要重载 operator * 和 operator ->
+
 # Traits编程技法
 - 迭代器value type：迭代器所指对象的型别
   - 通过function template的参数推导机制可以比较快速的确定value type
