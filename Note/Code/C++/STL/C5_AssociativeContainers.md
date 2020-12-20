@@ -57,3 +57,33 @@
 节点双层结构。
 
 > 为了防止边界情况的发生，专门设置了为根节点设计了一个父节点——header节点。
+
+# set
+- set的iterator是RB-Tree的const_iterator，是一种 constant iterator
+
+# map
+
+# multiset
+与set一样，不过允许value重复。
+
+# multimap
+与map一样，不过允许key重复。
+
+# hashtable
+## hash function（散列函数）
+- 碰撞问题：
+  - 线性探测：主集团问题
+  - 二次探测：次集团问题——复式散列
+  - 开链（separate chaining）
+
+
+
+### 开链——桶子（buckets）与节点（nodes）
+
+![][HashTable]
+
+[HashTable]: ./HashTable.jpg
+
+是否要resize重建表格，完全看buckets vector是否要取下一个size的质数。
+
+
