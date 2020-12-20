@@ -86,4 +86,12 @@
 
 是否要resize重建表格，完全看buckets vector是否要取下一个size的质数。
 
+# hash_set
+一般的set以RB-Tree作为底层机制，而hash_set以hashtable作为底层机制。
+
+# hash_map
+
+# hash_multiset
+
+# hash_multimap
 
