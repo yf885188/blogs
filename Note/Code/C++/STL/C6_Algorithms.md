@@ -31,3 +31,11 @@
 
 # 其他算法
 - next_permutation与prev_permutation
+
+## sort排序
+- 数据量大时采用Quick Sort，分段递归排序
+- 分段数据量小了之后会只用插入排序
+- 如果递归层次过审，改用堆排序
+
+### intro sort -- median of three quick sort
+- 必须是RandomAccessIterator
