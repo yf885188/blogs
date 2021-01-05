@@ -13,3 +13,20 @@
 
 # 数值算法
 头文件<numeric>
+
+# 基本算法
+![][AlgorithmsCopy]
+
+[AlgorithmsCopy]: ./AlgorithmsCopy.jpg
+
+# set相关算法
+- 并集
+- 交集
+- 差集
+- 对称差集
+
+> 必须是sorted
+
+# heap算法
+
+# 其他算法
