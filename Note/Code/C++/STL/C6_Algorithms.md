@@ -30,3 +30,4 @@
 # heap算法
 
 # 其他算法
+- next_permutation与prev_permutation
