@@ -37,5 +37,6 @@
 - 分段数据量小了之后会只用插入排序
 - 如果递归层次过审，改用堆排序
 
-### intro sort -- median of three quick sort
+### intro sort 与 median of three quick sort
 - 必须是RandomAccessIterator
+- intro sort大部分情况下几乎与median of three quick sort相同，但是当分割行为有恶化为二次行为的倾向时，能够自我侦测，改用heap sort。
