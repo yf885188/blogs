@@ -18,6 +18,7 @@
 
 资源设置接口：
 - SetupSceneTextureUniformParameters 
+  - 使用时机：在每个指定的pass前都会进行处理，改变相关的参数、纹理、状态等等。（没有想的那么高端……）
 
 封装的参数：
 - SceneTextureParameters
