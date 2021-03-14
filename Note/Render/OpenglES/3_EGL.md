@@ -1,0 +1,11 @@
+# 细节
+- 确定可用表面配置
+- 查询EGLConfig属性
+- 选择EGLConfig
+  - 多个的时候按照优先级排序
+- 创建屏幕外渲染区域：EGL PBuffer
+  - > EGL Config 的用法跟DX中确定RT/Texture时候用的描述符挺像，用来创建对象时使用的配置。
+- 创建渲染上下文
+- 同步渲染
+  - 不同OpenXX的API可以在一起同时使用
+  - 使用eglWaitClient()/eglWaitNative(EGLint engine)等方式来保证全部/指定的API渲染完成
