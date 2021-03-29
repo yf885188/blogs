@@ -19,3 +19,10 @@
 
 ## VS中的uniform限制数量
 - uniform和const 变量、字面值等必须按照**打包规则**之后与gl_MaxVertexUniformVectors相匹配
+- 字面值最好能统一，因为字面值在shader内会多次计算
+
+# 变换反馈
+直接把VS的输出到缓冲区对象中。
+- glTransformFeedbackVaryings:捕捉对应变量并输出到缓冲区
+- glBeginTransformFeedback
+- glEndTransformFeedback
