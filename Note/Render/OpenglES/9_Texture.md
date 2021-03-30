@@ -63,3 +63,18 @@ API：
 - glCompressTexImage3D
 
 # 纹理子图像规范
+
+# 从颜色缓冲区赋值纹理数据
+- glReadBuffer
+- glCopyTexImage2D
+- glCopyTexSubImage2D/3D
+
+# 采样器对象
+- glGenSamplers
+- glDeleteSamplers
+- glBindSampler
+- glSamplerParameter[i|f][v]
+
+# 不可变纹理
+
+# 像素解包缓冲区对象
