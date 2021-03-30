@@ -44,3 +44,22 @@
 
 ## 深度纹理
 
+## 着色器中使用纹理
+- glActiveTexture
+- glBindTexture
+- 绑定sample
+
+使用：
+- 立方体纹理
+- 3D纹理
+- 2D纹理数组
+
+# 压缩纹理
+- ETC2
+- EAC
+
+API：
+- glCompressTexImage2D
+- glCompressTexImage3D
+
+# 纹理子图像规范
