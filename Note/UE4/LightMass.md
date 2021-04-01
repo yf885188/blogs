@@ -26,4 +26,9 @@ FStaticMeshComponentLODInfo.MapBuildDataId
 - ULevel::HandleLegacyMapBuildData : GComponentsWithLegacyLightmaps上的 LegacyMeshData直接copy
 - UModel::ApplyStaticLighting ：Surface Lightmap / ShadowMap 进行合图，Pack设置相关的参数，并更新受到影响的MeshMapBuildData.ShadowMap
 - FStaticMeshStaticLightingTextureMapping::Apply : 不是用VT有相关数据就要更新ShadowMap, 维护一个不不相关的light列表
+
+![][FStaticMeshStaticLightingTextureMappingMappingWorkFlow]
+
+[FStaticMeshStaticLightingTextureMappingMappingWorkFlow]: ./images/FStaticMeshStaticLightingTextureMappingMappingWorkFlow.jpg
+
 - FLandscapeStaticLightingTextureMapping::Apply ： 跟上面的类似，就是加了植被
