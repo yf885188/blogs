@@ -14,3 +14,16 @@ FStaticMeshComponentLODInfo.MapBuildDataId
   - 有OwnerLevel且OwningWorld
     - 有ActiveLightingScenario ：返回ActiveLightingScenario->MapBuildData
     - 有OwnerLevel:返回OwnerLevel->MapBuildData
+
+## MapBuildData
+### 填充数据
+- UMapBuildDataRegistry::AllocateMeshBuildData
+- UMapBuildDataRegistry::InvalidateStaticLighting：看原有的资源是否保持，如果保持的话就更新到MeshMapBuildData
+
+#### UMapBuildDataRegistry::AllocateMeshBuildData
+途径：
+- UInstancedStaticMeshComponent::ApplyLightMapping （InstancedStaticMesh）
+- ULevel::HandleLegacyMapBuildData : GComponentsWithLegacyLightmaps上的 LegacyMeshData直接copy
+- UModel::ApplyStaticLighting ：Surface Lightmap / ShadowMap 进行合图，Pack设置相关的参数，并更新受到影响的MeshMapBuildData.ShadowMap
+- FStaticMeshStaticLightingTextureMapping::Apply : 不是用VT有相关数据就要更新ShadowMap, 维护一个不不相关的light列表
+- FLandscapeStaticLightingTextureMapping::Apply ： 跟上面的类似，就是加了植被
