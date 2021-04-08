@@ -14,7 +14,7 @@
 
 </div>
 
-[GimbalLockMathTheory]: ./GimbalLockMathTheory.png
+[GimbalLockMathTheory]: ./images/GimbalLockMathTheory.png
 
 # 解决方案
 四元数

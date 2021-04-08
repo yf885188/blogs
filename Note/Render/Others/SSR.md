@@ -29,7 +29,7 @@
 
 因此就需要把屏幕空间步进1单位的长度反算回相机空间，然后进行求交。
 
-[SSRRayMarching]: ./SSRRayMarching.jpg
+[SSRRayMarching]: ./images/SSRRayMarching.jpg
 
 ## 2.3. 相交判断
 根据当前步进点在裁剪空间中的深度与depth buffer中的采样值进行比较，如果深度比采样的深度略大于或者等于就保证相交了。

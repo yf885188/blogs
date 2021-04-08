@@ -20,7 +20,7 @@
 
 </div>
 
-[DeepPeeling]: ./DeepPeeling.jpg
+[DeepPeeling]: ./images/DeepPeeling.jpg
 
 > - 多pass，分层进行深度剥离
 
