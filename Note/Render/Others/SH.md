@@ -64,6 +64,7 @@ $$I\approx \frac{1}{N}\sum ^N_{i=1} \frac{f(x_i)}{p(x_i)}$$
       \end{array}
     \right.
   $$
+> 主要用于后续球面光线方向的均匀随机采样。
 
 # 4. SH
 基于伴随勒让德多项式的谐波基函数表示。
