@@ -99,7 +99,7 @@ $$P^m_l(x)=(-1)^m(1-x^2)^{\frac{m}{2}}\frac{d^m}{{\rm d}x^m}(P_l(x))$$
 $$Y^m_l(\theta, \phi) = \left\{
       \begin{array}{c}
       \sqrt 2 K^m_l \cos(m\phi)P^m_l(\cos\theta) (m>0)\\
-      \sqrt 2 K^m_l \sin(-m\phi)P^{-m}(\cos\theta) (m<0>)\\
+      \sqrt 2 K^m_l \sin(-m\phi)P^{-m}(\cos\theta) (m<0)\\
       K^0_lP^0_l(\cos\theta) (m=0)\\
       \end{array}
     \right.
@@ -122,6 +122,13 @@ $$y_i(\theta, \phi) = Y^m_l(\theta, \phi)$$
 $f(\theta,\phi)$在球面$S$上的展开式为：
 $$f(\theta, \phi) = \sum^{\infty}_{l=0} \sum^l_{m=-l}C^m_lY^m_l(\theta, \phi)$$
 其中，$C^m_l = \int_s f(s) Y^m_l(s){\rm d}s$
+
+> 求$C^m_l$的方式,有的blog上是通过对上面的积分，两边乘以$Y^m_l$然后积分的方式得到。这种方式有误，应该从物理意义上来理解，通常叫投影。如下图
+> ![][SHCoffients]
+
+[SHCoffients]: ./images/SHCoffients.jpg
+
+> 那是不是可以这么理解：$C^m_l$实际上是把函数$f(s)$在球面上的所有的值进行编码之后分散到频带上的系数。
 
 展开为单参数形式：
 $$f(\theta, \phi) = \sum^{\infty}_{l=0} \sum^l_{m=-l}C^m_lY^m_l(\theta, \phi) = \sum^{n^2}_{i=0} c_iy_i(s)$$
