@@ -44,3 +44,37 @@
 
 ## 深度纹理
 
+## 着色器中使用纹理
+- glActiveTexture
+- glBindTexture
+- 绑定sample
+
+使用：
+- 立方体纹理
+- 3D纹理
+- 2D纹理数组
+
+# 压缩纹理
+- ETC2
+- EAC
+
+API：
+- glCompressTexImage2D
+- glCompressTexImage3D
+
+# 纹理子图像规范
+
+# 从颜色缓冲区赋值纹理数据
+- glReadBuffer
+- glCopyTexImage2D
+- glCopyTexSubImage2D/3D
+
+# 采样器对象
+- glGenSamplers
+- glDeleteSamplers
+- glBindSampler
+- glSamplerParameter[i|f][v]
+
+# 不可变纹理
+
+# 像素解包缓冲区对象

@@ -10,7 +10,7 @@ work flow
 
 </div>
 
-[MSAAWorkFlow]: ./MSAAWorkFlow.jpg
+[MSAAWorkFlow]: ./images/MSAAWorkFlow.jpg
 
 # DS不支持MSAA的原因
 - GBuffer填充之后，在shading阶段，不知道三角形的覆盖信息，也即无法计算coverage。

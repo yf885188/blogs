@@ -26,7 +26,7 @@
 # Render的过程
 ![][RenderFlow]
 
-[RenderFlow]: ./RenderFlow.jpg
+[RenderFlow]: ./images/RenderFlow.jpg
 
 # 坑：
 - 考虑创建的几个来源：
