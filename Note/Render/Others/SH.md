@@ -169,9 +169,9 @@ $$L(s)t(s)=(\sum_{i=0}^{n^2}c_{li}y_i(s))(\sum_{i=0}^{n^2}c_{ti}y_i(s))\\=\sum_{
 其中,$c_{li},c_{ti}$分别对应$L(s),t(s)$的SH cofficients。
 
 因此有，
-$$\int_S L(s)t(s){\rm d}s = \sum_{j=0}^{sampler\_count}\sum_{i=0}^{n^2}L_it_i$$
+$$\int_S L(s)t(s){\rm d}s = \sum_{j=0}^{sampler\_count}\sum_{i=0}^{n^2}L_{i,j}t_{i,j}$$
 （原链接有误，少了一个积分）
-
+其中，$i$表示频带展开之后的索引，$j$表示采样
 
 # 5. 基于SH的PRT
 分为两个部分**传输**和**着色**
@@ -181,5 +181,5 @@ $$\int_S L(s)t(s){\rm d}s = \sum_{j=0}^{sampler\_count}\sum_{i=0}^{n^2}L_it_i$$
 $$L_{DU} = \frac{\rho_x}{\pi} \int_S L_i(x, \omega_i)max(N_x\cdot \omega_i, 0){\rm d}\omega_i$$
 
 基于**函数乘积的积分=球谐系数向量的点积**，就有
-$$L_{DU} =\frac{\rho_x}{\pi} \sum_{j=0}^{sampler\_count}\sum_{i=0}^{n^2} L_i*max(N_x\cdot w_i,0) $$
+$$L_{DU} =\frac{\rho_x}{\pi} \sum_{j=0}^{sampler\_count}\sum_{i=0}^{n^2} L_{i,j}*max(N_x\cdot w_i,0) $$
 
