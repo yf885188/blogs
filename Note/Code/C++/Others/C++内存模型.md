@@ -29,8 +29,8 @@
 
 用户态的实现下，内存分配最终都回到了对malloc和free的调用上。
 
-[MemoryHierarchy]: ./MemoryHierarchy.jpg
-[MemoryHierarchy1]: ./MemoryHierarchy1.jpg
+[MemoryHierarchy]: ./images/MemoryHierarchy.jpg
+[MemoryHierarchy1]: ./images/MemoryHierarchy1.jpg
 
 # new 和 delete
 ## new
@@ -55,7 +55,7 @@
 - 对于array如果使用的是delete而不是delete[],则会因为访问到的是数组的个数，而不是实例地址，导致错误。
 - 基本类型不会有这样的问题。
 
-[ArrayNewMemStructure]: ./ArrayNewMemStructure.jpg
+[ArrayNewMemStructure]: ./images/ArrayNewMemStructure.jpg
 
 # Placement New
 
@@ -74,7 +74,7 @@
 
 
 
-[PlacementNewWorkFlow]: ./PlacementNewWorkFlow.jpg
+[PlacementNewWorkFlow]: ./images/PlacementNewWorkFlow.jpg
 
 # G2.9 std::alloc的运行模式
 去掉单次内存分配时cookie等带来的内存消耗。
@@ -95,7 +95,7 @@ work flow:
     - 大小不够：把备用内存挂在响应的内存链表下，然后申请新的内存，也即跳刀不存在备用内存池的步骤。
 - 如果所有内存都被分配到了各自大小的内存链表中，这时再分配内存就会导致内存不足，此时会从右边最靠近的内存链表中获取相关的内存作为备用内存池，然后分配给当前的内存链表。如果右边没有则会导致分配失败。
 
-[AllocWorkFlow]: ./AllocWorkFlow.jpg
+[AllocWorkFlow]: ./images/AllocWorkFlow.jpg
 
 # malloc/free
 
@@ -113,7 +113,7 @@ VC6 CRT Start Up Flow:
   - 有一个Group要回收，记为defer
   - 等第二个Group要回收，把defer Group回收，然后把第二个触发全回收的Group记为defer
 
-[CRTStartUp]: ./CRTStartUp.jpg
+[CRTStartUp]: ./images/CRTStartUp.jpg
 
 
 # bitmap_allocator
@@ -130,4 +130,4 @@ VC6 CRT Start Up Flow:
 - 全回收的super-block会被放到一个free list，并按照super block的大小进行排列。如果这个free list的大小达到64的上限，新回收的super-block如果大于free list尾部最大的super block size会被直接delete，反之替代掉尾部的super block。
 - 如果所有的super block都进到free list中，此时又触发了block的分配，就直接从free list中选取一个super block回来接着使用。
 
-[BitmapAllocatorStructure]: ./BitmapAllocatorStructure.jpg
+[BitmapAllocatorStructure]: ./images/BitmapAllocatorStructure.jpg

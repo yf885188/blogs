@@ -44,7 +44,7 @@
 
 </div>
 
-[LvalueAndRvalue]: ./LvalueAndRvalue.jpg
+[LvalueAndRvalue]: ./images/LvalueAndRvalue.jpg
 
 ## 1.2. 左值引用与右值引用
 - 左值引用用法与指针类似
