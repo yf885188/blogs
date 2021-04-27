@@ -57,3 +57,32 @@
 - streambuffer：对input和output进行封装
 - buffers_iterator<>：对buffer进行迭代遍历
 - buffer debugging: VS8.0之后支持，或者在GCC中启用了_GLIBCXX_DEBUG宏
+
+
+# stackless coroutines
+用同步的方式来实现异步逻辑。
+
+> 与C#中的协程进行类比，底层实现是个状态机
+
+关键字
+- reenter
+- yield
+- fork
+
+# stackful coroutines
+使用spawn()函数来运行
+
+## spawn函数
+- 第一个参数：可以是strand，io_context或者completion handler。指定了协程保证执行的context。
+- 第二个参数：有boost::asio::yield_context作为参数的函数
+
+## stackless coroutines和stackful coroutines的区别
+- 手动和自动的区别？
+
+# Coroutines TS Support
+TS ： type script
+
+新的数据结构：
+- awaitable class template
+- use_awaitable completion token
+- co_spawn function
