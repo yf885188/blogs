@@ -22,3 +22,16 @@ CPU可用的避免阻塞的好方式：分支预测，指令记录，寄存器�
 ![][SIMD]
 
 [SIMD]: ./images/SIMD.png
+
+# VS
+- uniform分配的寄存器比inputs或者outputs分配的寄存器数量要多很多
+  - 主要是因为inputs和outputs要为每个vs分开存储
+
+![][VSRegisters]
+
+[VSRegisters]: ./images/VSRegisters.png
+
+
+- 流程控制：高级语言层次。if 和 case等等
+  - 静态流程控制：依据uniform inputs。意味着draw call间的流程控制都是一样的。
+  - 动态流程控制：基于变化的输入（varying inputs），也更耗性能。
