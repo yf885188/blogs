@@ -37,7 +37,7 @@ CPU可用的避免阻塞的好方式：分支预测，指令记录，寄存器�
   - 动态流程控制：基于变化的输入（varying inputs），也更耗性能。
 
 > instancing : 使用不同的object data绘制一个object/mesh多次，并且只用一个draw call。
-
+# 
 用处：
 - 生成/变形object
 - 蒙皮
@@ -55,3 +55,20 @@ CPU可用的避免阻塞的好方式：分支预测，指令记录，寄存器�
 ![][TSShadersWorkFlow]
 
 [TSShadersWorkFlow]: ./images/TSShadersWorkFlow.png
+
+# gs
+- 更改图元类型。
+- 改变顶点数，但是不会生成多的顶点。
+- 改变输出数据或者对复制做限制。
+- 使用instancing
+
+> - 可以保证输出的顺序
+> - 只有三个地方能产生GPU work：光栅化、ts和gs。而gs因为是完全可编程的存在，所以具有最少的可预测性。而且gs也很少能体现GPU的实力，在一些移动设备上也通常用软件的方式实现gs，在这些场合下，也不鼓励gs的使用。
+
+# streaming out
+Shader Model 4.0的新特性。vs/ts/gs出来的数据可以通过关掉的光栅化的方式，以stream的方式传递、迭代或者read back。在某些特定领域：flowing water、粒子特效等方面有应用。
+
+缺陷：
+- 只能以float的方式返回，有性能消耗
+- 作用于图元，而非顶点
+- 不支持顶点共享，因此通常都是把三角形按照点集图元进行传递
