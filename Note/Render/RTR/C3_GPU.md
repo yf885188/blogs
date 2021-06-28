@@ -74,3 +74,14 @@ Shader Model 4.0的新特性。vs/ts/gs出来的数据可以通过关掉的光�
 - 不支持顶点共享，因此通常都是把三角形按照点集图元进行传递
 
 # ps
+- MRT与Deferred Shading
+  - 一般来说，Deferred Shading无法访问周围的像素，但是现在的GPU硬件对像素的处理通常都是以2x2为一组来进行处理。有个问题就是，如果有的信息是受dynamic flow control影响的，那么这种类似梯度的信息是获取不到的。2x2一组的像素必须是使用相同的指令。
+- PS并行处理下解决资源竞争的方式-专用的原子计算单元。
+- ROV ： Rasterizer order view。类似于UAV，能用同样的方式进行读写。主要的区别就是，ROV保证了数据是按照合适顺序进行访问。这种方式能帮助PS自己决定blend 方式，而不再需要merging stage。坏处就是，如果有不按照顺序的访问发生，那么ps必须得等到比它早的三角形绘制完成。
+
+# merging stage
+一些黑科技：
+- early-z
+- MRT不支持blending
+
+# compute shader
